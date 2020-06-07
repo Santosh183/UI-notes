@@ -1,0 +1,885 @@
+--> It's good practice to put styles in in style tag in head however they could be present in body tag or even out of body, html and head tag as 
+	well. we should put in head tag because they will get loaded early before elements so that are ready to aplly while element is being rendered. 
+	on other hand script tag we should put just before end of body tag because our js code should run only when all elements are loaded.
+
+--> When we write html5 from scratch to tell browser that this is html5 we have to declare it by <html !DOCTYPE>
+	<html !DOCTYPE>
+	<html>
+	.... body, head all things goes here
+	</html>
+
+--> html and css are not case sensitive languages. hence elements name are not case ensitive. in css property names are not case sensitives
+	however name of classes , ids are case	sensitive.
+
+--> If we do not give any title to html page by default file name is title
+
+--> strong and b both tags makes texts bold but strong tag means emphasis on some text i.e. not only for presentation. ex. we give emphasis
+	for particular word while talking as well.
+	<b> and <i> are explicit - they specify bold and italic respectively.
+	<strong> and <em> are semantic - they specify that the enclosed text should be "strong" or "emphasised" in some way, usually bold and italic, 
+	but allow for the actual styling to be controlled via CSS. Hence these are preferred in modern web pages.
+	just by appearance i and em both make rext italic where b and strong makes text bold.
+
+--> text-align: justify; means each line has equal length.
+
+--> by default in box model width of element means just width of content. if we give 100px width , 2px border and 10px padding then total width of 
+	element become 124px (100 + 10+ 10 + 2 + 2). Sometimes this inbuilt feature could be annoying enough. to get rid of this we have 
+	box-sizing: border-box; after applying this property when we say width: 100px, border: 2px and padding: 10px then total width: 100px
+	and content width would be 100px - 20px - 4px = 76px.
+	if padding + border goes beyond total width given then width of content become 0.
+
+--> if we set margin to right and left to auto it will place element in middle of the screen horizontally. margin: 0 auto; this will work for block elelemnt.
+	if we want to make inline elelemnts at center horizaontally then we have to apply text-align:center; on parent element of inline element.
+
+--> position:absolute for child and position:relative(or any other) to parent make child element to place at lefmost and top most position.
+	by applying right,left,top,bottom we can move child element within parent element. child element without top,left etc properties will
+	be placed after padding of parent however if we apply any property like left, right etc. then it's positioning start from just after border
+	without respecting padding. for position absolute it always moves with respect to parent element which has some position propoerty.
+	in case of position: relative it moves with respect to element itself. also in this case it respect padding even after applying left,right etc.
+
+--> When we start with web designing coming each time with new yet stunning layout might not be possible. So though it sounds wrong we may steal
+	some pattern or layout from other websites but with some modifications.
+
+--> When we start to build layout of website we have to make hierarchy on web page so that in hierarchy top order should be dedicated to
+	content which must be presented first in front of users. Another important thing by functionality draw all rough sketches of all pages and then 
+	decide navigation for each of them.
+
+--> When we add css files to any html page by link tag, hierarchy in which they are imported in head of html page does matter. it's just sequential
+	css rules. bottom most imported file will override all css rules for earlier imported files.
+
+--> before adding or applying any css to web pages it could be nice idea to reset or normalize css for all element. reset.css contain all 
+	css rules which removes all default styles of all element i.e. block element has default maring. Normalize.css has all css rules which ensure that 
+	css properties for all browser would be consistent by default.
+
+--> For responsive web design there few main things we need to use extensively. 
+	1) All element should be sized in relative units such as percentage
+	2) Images should be flexible and should change size in relative units again.
+	3) Using media queries for targeting different screen sizes.
+	4) we must have to create layout using grid system where we decide layout where number of columns could be anything between 1 to 12.
+	   give column appropriate width and make them responsive by using media queries.
+
+--> when we create sections like header, footer etc. instead of using normal div we should use html5 elements like header , footer.
+	by those elements search engine exactly know which is header of web page and which one is footer. also it adds readability.
+
+--> vh units stand for viewport height. 100 vh means 100% of viewports height. height: 100vh is often used to make element's height equal to height of viewport.
+	similarely vw: viewport width: 100vw.means 100% of viewports width.
+	Viewport: It is your device screen.
+	Window: It is your browser window. The window can be as big as viewport or smaller.	
+
+--> when we set background-image for any element by using background-image: url(img/hero.jpg); image size will not fit with element size. tomake that happen we 
+	have to apply    background-size: cover; now in order to make image at center of the page we have to apply    background-position: center;
+	background-position is useful when image is larger than element itself.
+
+--> We have often seen below code to make any element 
+	position: absolute;
+    top:50%;
+    left:50%;
+    transform: translate(-50%,-50%);
+	It naturally cone in mind like if we push element from left and top by 50% then it will come at exactly middle of it's parent. taht's true why do we need to
+	translate it by -50% then? Actually by moving element from top and left by 50% either by margin or top-left element comes in middle of screen but from that 
+	point width and height of elements begin from that pixel and then it's width and height make it look like moving little more towards right 
+	and bottom. Element would have been exactly at middle of the parent element if middle of child element is at middle of parent.
+	but in our case middle of parent has start of child. In order to make middle of child at  midle of parent we need to move child element
+	left and top by half of it's size. so we are translating child element by -50%. IMportant thing to note here is -50% used intranslate
+	refers to 50% of element itself but when we say 50% for margin or top it's 50% of parent 
+
+--> when we want to write something on the image we can make image look darket by applying linear gradient.
+	background-image: linear-gradient(rgba(0,0,0,0.7),rgba(0,0,0,0.7)),url(img/hero.jpg); here whatever comes first will get on top other. so in this case 
+	background gradient will be on top with some opacity.
+
+--> When we gives font-size in percentage, it would be % of font size of parent element. this holds true for other properties as well. such as 
+	line height, letter-spacing etc. but not for padding and margin.
+	parent has font-size: 20px, now in child font-size:200% would be equivalent to 40px. It's good habbit to give font size in some pixels 
+	to parent most element(html,body etc.) and then give font-size in percentage to all subsequent element in percentage.
+	Usually when we have very big heading with larger font size we should reduce it's font weight to make it look nicer.
+
+--> To create animations transition property is important. Along with other properties we need to apply transition for properties we wish to apply.
+	ex. border: 1px solid white; 
+		background-color:red; 
+		transition: border 0.2s, background-color 0.2s;
+	means whenever we have to change in border on hover then it will not change instatly instead it wll take 0.2s to do so.
+	It add beautiful transition effect.
+
+--> When we say  width:auto;
+	width will never exceed the total width of parent element. Maximum width is it's parent width.
+	Even if we add border, padding and margin, content of element itself will become smaller in order to give space for border, padding and margin.
+	In case if space required for border + padding + margin is greater than total width of parent element then width of content will become zero.
+	When we say    width:100%;
+	width of content of element will become 100% of parent element and from now if we add border, padding or margin then it will cause child element 
+	to exceed parent element's width and it will starts overflowing out of parent element.
+
+--> We can divide whole web page in different sections. we have section tag in HTML5 which can be used to wrap every individual section.
+
+--> we can write comment in html5 by <!-- comments -->
+
+--> In html5 we can insert differnt symbols or characters which we may not able to type from keyboard. ex. $mdash; would make nice longer dash in page.
+	there are many such symbols available.
+
+--> We can use selector::after and selector::before for creating some content after any element. ex we want border of just 10px length for element having 
+	width 100px. we can say element::after { display:block; margin-top:10px; width:10px; height:2px; background-color:orange}. in this way we can
+	give border-radius to even borders.
+
+--> transform:scale(1.15) will zoom element by 15%.
+
+--> When we add css properties with selector and we have to omit some of selectors depending on condition then we have pseudo class :not().
+	ex. div:not(div.classname) in this case all divs except given classname will get those styles applied on them.
+
+--> When we set change opacity of element or images it becomes white so we can't add some cool effects. In this case making background black is good way to 
+	to get rid of that. 
+
+--> when we need to create some content which is not on keyboard or in form of html element then using ::after or ::before is good solution.
+	by content we can create lot of different symbols in whatever size we want.
+
+--> box-shadow has mainly 5 values which are used mostly. there are others as well but those are rarely used.
+	ex. box-shadow: R/L T/B blurr spread color;
+	R/L may have either positive or negative value. positive value makes shadow moves towards right of element and negative towards left. 
+	T/B may have either positive or negative value. positive value makes shadow moves towards bottom of element and negative towards top.
+	blurr is again value in pixel like R/L or T/B. this values increase or decrease in this value increase/decrease blurr of shadow.
+	spread is amount in pixel aain like other values which decides how much we want to spread shadow. this makes shadow spread to all side.
+	 this means T/B and R/L values are addition to this spread and hence if we want shadow of equal amount from all side we should give spread
+	 value and make T/B and R/L 0px. 
+	Last value is color of the shadow.
+	similar to box-shadow we have text-shadow properties which works almost same except it get applied to text within element.
+
+--> When designing forms we should always wrap up all form element in form tag. inside form we usually have one submit button 
+	which HTML5 explicitly provide us. <input type="submit" value="name to diaplay on button" />
+	now after wrapping form elements inside form tag we can use basic validators of html5 like required etc.
+	if we click on submit button it will show warning.
+
+--> for label element if we give id of form element in for attribute then after clicking on label focus on will go to that particular element.
+	ex. <label for="idname">Name</label>  <input type="text" id="idname">
+
+--> For making website responsive we have some standard breakpoints.
+	/* SMARTPHONES PORTRAIT */ : @media only screen and (min-width: 300px) {}
+
+	/* SMARTPHONES LANDSCAPE */ : @media only screen and (min-width: 480px) {}
+
+	/* TABLETS PORTRAIT */ : @media only screen and (min-width: 768px) {}
+	
+	/* TABLET LANDSCAPE / DESKTOP */ : @media only screen and (min-width: 1024px) {}   
+	
+	by minimum width css wil get applied once that width is there. however if othr breakpoint is hit then it will change.
+	we also can have max-width. which means below that width css will get applied.
+
+--> <meta name="viewport" content ="width=device-width, initial-scale=1.0">   useful meta tag which tell browser few things. 
+	width="" tells which width browser should consider for viewport. initial-scale="" tells that at beginning there should not be zoomed screen.
+	we can have different kind of info in metatag such as charset to use, keywords to help search engine to search website and so on.
+	  <meta charset="UTF-8">
+	  <meta name="description" content="Free Web tutorials">
+	  <meta name="keywords" content="HTML,CSS,XML,JavaScript">
+	  <meta name="author" content="John Doe">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+--> While making website responsive genral approach should be inspect web page in browser and then fix distorted or wrong parts one by one 
+	using decided breakpoints.
+
+--> Like responsiveness web pages also should look good on all browsers in internet community. However unfortunately by default differen
+	browsers treat or render html5 ,css3 and js in different manner. So after testing on different browser we may see some differnces.
+	we can target specif browser by adding prefix before css properties.
+	Android: -webkit-
+	Chrome: -webkit-
+	Firefox: -moz-
+	Internet Explorer: -ms-
+	iOS: -webkit-
+	Opera: -o-
+	Safari: -webkit-
+	ex. -webkit-border-radius: 5px;
+	not all properties need prefixes. only some of properties need them like border-radius, transition, transform etc. in order to know which 
+	property need it and which don't need there are couple of plugins available for editors. or else we can check it online.
+
+--> To know whether particular css property is supported in different versions of different browsers we have website caniuse.com to check.
+
+--> One of the most famous method to build nice layout using pure css3 is flexbox. In flexbox we have parent element and several child elements.
+	we can render them in several different layout we can think of. There are several css properties we should learn if we want to use flexbox.
+	again some of properties are applicable for parent element and some of properties are applicable for the child elements. let's learn them one by one.
+	
+	parent-1:=> display: flex; perhaps this is starting point of play with flexbox. without this we shouldn't even talk of the flexbox.
+	
+	parent-2:=> flex-direction: row; by default this property has value row. this property can have four different values.
+				flex-direction: row; this means all child items inside parent will render in row. from begining of the parent lement.child-1,child-2..
+								from start. flex-direction: row-reverse; this means all child items will render in row but in reverse order. now 
+								intersting thing to note here is as direction is reverse that means childs will start rendering from end. child-1,child-2..
+								from end.      
+				flex-direction: column; this means all child items will render in column from start to bottom. child-1,child-2 ... from top to bottom.
+				flex-direction: column-reverse; this means all child items will render in column from bottom to start in upward direction. 
+								bottom to top. child-1,child-2 ...
+	
+	parent-3:=> flex-wrap: nowrap; by default this property has value nowrap. this property has three different values. Sometime let's say we have 
+				                   too many child items in parent and they can not fit horizontally or vertically in parent (mostly horizontally).
+								   In this case we should use this property.
+				flex-wrap: nowrap; this means there should not be wrapping at all. all child should stay on same horizontal flow. and create scroll bar if 
+				                   childs are overflowing out of parents.
+				flex-wrap: wrap; this means extra childs should appear on next row/column in parent if they are overflowing out of parent element.
+								 if flex-direction is row they will appear on next row. and if flex direction is column then on next column.
+				flex-wrap: wrap-reverse; first of all there would be wrapping means extra childs will appear on another row or column depending
+					                     on flex-direction. here difference is end row/column will appear first. ex. if we have 12 child and only 9 can fit
+										 in first row then we will have another row/column for remaining 3. but while rendering in browser.
+										 first row will contain those last 3 child and second row will contain first 9.
+										 ex. c-10 c-11 c-12
+										     c-1 c-2 c-3 c-4 c-5 c-6 c-7 c-8 c-9
+	
+	parent-4:=> flex-flow: val1 val2; this is not exactly the new property of preant element but it's shorthand property for mixing both flex-direction
+	                                  and flex-wrap. first value is value for flex-direction and second one for flex-wrap. ex. flex-flow: row wrap.
+	
+	parent-5:=> justify-content: flex-start; flex-start is default value for this property. this property has 6 different values. this property is important for
+	                             positioning childs inside the parent elements.
+				justify-content: flex-start; this will poistion all child elements at the begining of the parent. again in case of flex-direction:row-reverse
+				                 beginning of flex will opposite to that of flex-direction:row. same applies for column as well.	
+				justify-content: flex-end; this will poisition child elements at the end of parent element. again in case of flex-direction:row-reverse
+				                 end of flex will opposite to that of flex-direction:row. same applies for column as well.
+				justify-content: center; this will position the child element at the vertically or horizaontally middle of parent element depending on it'same
+								 flex-direction. it will leave equal amount of space from both side and child elements will appear at center.
+				justify-content: space-between; this means first child item will appear at begining and last at end. and in between them there will be equqal 
+				                 amount of space left in between all element. however there will be no space before first element and after last element.
+				justify-content: space-around; this means first child item will appear at begining and last at end. and in between them there will be equqal 
+				                 amount of space left in between all element. also there will be space before first element and after last element. however
+								 amount of space before first element and after last element is less than that of space between the element.
+				justify-content: space-evenly; this is exactly similar to space-around value of this property. difference is in this case space in between
+								 child elements is same as that of space before first element and space after last element. so equal space.
+	
+	parent-6:=> align-items: stretch; stretch is default value for this property. with justify content property we can position or align items in horizontal
+							 scale when flex-direction is row and in vertical scale if flex direction is column. but this property help us align child
+							 elements to align them in vertical scale when flex direction is row and in horizontal scale when flex-direction is vertical.
+				align-items: stretch; this means child elements will have height equal to parent even if they are smaller. they will acquire all vertical 
+				             space except margin of child element and padding of parent element. however if we explicitly give some height to child then 
+							 for that particular child given height will get applied.
+				align-items: flex-start; this means when flex-direction is horizontal child elements will be placed at start of vertical scale.
+				             if parent has heigh 500px and children have 100px then in this case vertically top 100px will be occupied by children.
+							 this would be reverse if flex-direction is column then align -item:flex-start will place them horizontally at the beginning.
+				align-items: flex-end; this means when flex-direction is horizontal child elements will be placed at end of vertical scale.
+				             if parent has heigh 500px and children have 100px then in this case vertically bottom 100px will be occupied by children.
+							 this would be reverse if flex-direction is column then align -item:flex-end will place them horizontally at the end.
+					         we now can easily sense that if we change flex-direction then whatever justify content do in row same thing align item do when 
+							 flex direction is column.
+				align-items: center; this means all child items will appear vertically at middle of parent element. if child elements have different
+				             heights then vertical middle of parent will resemble to that of vertical middle of all child elements.
+				align-items: baseline; this means baseline of child element will resemble with that of baseline of the parent element.
+				             baseline is nothing but bottom of text. i.e. line just above which text would have rendered in that particular element.
+	
+	parent-7=> align-content: stretch; default value for this property is stretch. justify-content and align-items properties make sure to take care of
+	                          alignment and positioning of each child elemetn within single row or column depending on flex-direction. Now let's say we 
+							  have so many child elements in parent element that after wrapping they form multiple rows or columns depending on flex 
+							  direction in this case this property align all rows or columns withing parent element. align group of child elements 
+							  in parent element.
+			    align-content: stretch; This means that if flex-wrap is causing to make more rows or columns depending flex-direction then all rows/columns
+				               will get stretched in equal amount so that they will fit in parents height/width depending on flex-direction.
+				align-content: center; this means multiple rows or column will align at center.
+				align-content: space-between; there will be equal space between rows or cloumns but there will not be space before first column/row and
+				               after last column/row.
+				align-content: space-around; this means there will be equal amount of space in between rows/columns. Also there will be space before 
+				               first row/column and after last row/column however space after last column/row and before row/column is less compared to 
+							   space in between rows/columns.
+				align-content: space-evenly; this means there is eqlal space between rows/columns. Also there is same amount of space before first row/column
+				               and after last row/column.
+				align-content: flex-start; this means all rows/columns will start from begining of parent element without leaving space anywhere.
+				align-content: flex-end; this means all rows/columns will start from end of parent element without leaving space anywhere.
+	
+	child-1=> order:1; by default this property has value 0 which does nothing. This property is used to decide which child should render first.
+	                   if we do not give order then all child elements will render in sequence they are present in html. order=1  will make element
+					   to appear first even if that element is present as last child element.
+	
+	Child-2=> flex-grow:2; default value for this property is 1 which dosen't make any difference. depending on number of child sometime they occupy equal space 
+	                       in parent contaiiner. but let's say one of child is removed and hence that blank space amount will be divided by all remainig element.
+						   so while dividing that space among remainig child elements if child element has property flex-grow:2; this means this element will
+						   take 2 times space than other elements. Don't missunderstand that this element will be 2 times bigger than rest elements.
+						   if there are 4 child element each of 120 px and parent element has width 480px. now one of child element is removed so ideally.
+						   remaiinig space will be equally divided. so width of each 3 child would be 120 + 120/3 = 160. however if one of child has property
+						   flex-grow:2 then what will happen is he will take two shares while dividing space. so it will take 60px and remainig element will
+						   take 30px each. so new width of all elements will be 180px, 150px and 150px.
+			  
+	child-3=>flex-shrink:2; default value for this property is again 1 which dosen't make anything. this is exactly same as flex-grow with just opposite 
+			                 impact on element. when extra element is added and rest elements have tos shrink in order to accomodate newer one then 
+							 one with this property will shrink given number of times compared to other. for understanding full illustration read flex-grow 
+							 description.
+			  
+	child-4=>flex-basis: 200px; default value for this property is auto again which does nothing. As we see in flex-shrink and flex-grow that soome time 
+							 child elements get shrink or can expand size if container size is increased. As we know they may gain equal pixels or 
+							 loose equal pixels after resizing of container. However initially we can give some child element some initial width.
+							 which is nothing but flex-basis. now in future if they grow then again this element can also gain or loose it's size but 
+							 only from original given size. 
+	
+	child-5=> flex: fg fs fb; this is short hand property for combining flex-grow, flex shrink and flex-basis. sequence of values is same as given.
+	
+	child-6=> align-self;center; this proepry actually override anything given from container by align-item property. again this property can take below values
+	                         which are preety similar to align-items. center,flex-end, flex-start, stretch, basline and auto. auto means whatever width
+							 element.
+							 
+--> When we want to create flexbox, first thing we do is disply:flex; in this case container will occupy whole width. if we say display:inline-flex;
+    everything we saw until now will work except container will have width according to content and not full width.
+
+--> clip-path is property by which we can give different shapes to the element. we need to mention coordinates of shape we are wishing for.
+	shapes could be different such as triangle, polygon (quadrilateral) etc.
+	clip-path: quadrilateral(x y, x y, x y, x y); here x and y denotes the coordinates of the each of corner of quadrilateral. now whatever diagram 
+	these coordinates makes will be our final shape and not clipped. x can take value in pixel or percentage and same or y as well. here
+	percentage is relative to width of parent but to element itself. ex. polygon(0 0,100% 0,100% 75vh, 0 100%);
+
+--> when it comes to main heading our web site it must be in h1 tag because that is where google search for so useful for SEO we can put subsequent headings
+    in h2, h3 etc.
+
+--> Perhaps simplest way to create simple animation is using transition property. However as name suggest it's sufficient only for the simpler animations.
+	to build relatively complex animations we have keyfreames. In this case first we need to define animation with name and then after we have to apply it 
+	to any selector we wish to apply. kind of reusability by default. below is syntax for defining animations.
+	
+	@keyfreames animationName {
+	
+		0%{
+			what should happen when animation is yet to start.
+		}
+		20% {
+		    what should happen when animation is 20% completed.
+		}
+		100%{
+			what should happen when animation is completed.
+		}
+	}
+	we have mentioned steps in above set up. we have to keep number of steps. however sometimes it's difficult to give number of steps for some properties.
+	ex. let's say we have to change width of element from 1px to 100px it's bad idea to put 100 steps. another example is changing background color
+	 from blue to red. it's difficult to put steps. in such cases we have from and to properties to define the range as defined below.
+	@keyfreames animationName {
+	
+		from {
+			width:1px;
+			background:blue;
+		}
+		to {
+			width:100px;
+			background:red;
+		}
+	}
+	obviously we can have wide range from 0% to 100% and we can give as many number of steps as we want.
+	while using it we just have to give animation name in selector.
+	.animate-me {
+		animation-name: animationName;
+	}
+	apart from animation name we can set couple of other things here. some of them are worth knowing.
+	1) animation-duration: this is duration which animation will take to complete it. so whatever steps in keyframes we are defining in % that  is nothing but 
+	   percentage of this duration.
+	2) animation-delay: 1s (we can give in decimal seconds as well). this property is amount of time if we want to wait before animation start. after loading page 
+	   may be we want to wait for few seconds and then animation should start.
+	3) animation-iteration-count: we can give integer value to this property. this property is number which determine how many times we have to repeat animation.
+	   if we want this animation to happen repeateadly then we can say animation-iteration-count: infinite;
+	4) animation-timing-function: we saw that we with animation-duration and steps in keyframes we can determine at what time what should happen? however
+	   still question remains and that is at what speed? how fast animation would be at particular moment.? Now obviously it's going to complete in given time
+	   duration we can do something like it's slow in begining but fast at end etc.
+	   linear:	The animation has the same speed from start to end	
+	   ease:	Default value. The animation has a slow start, then fast, before it ends slowly	
+	   ease-in:	The animation has a slow start	
+	   ease-out:	The animation has a slow end	
+	   ease-in-out:	The animation has both a slow start and a slow end	
+
+--> backface-visibility:hidden; when we rotate element 180 degree using rotate or property or something else opposite site of element will get visible.
+	we can set this to hidden. in opposite side we will se miror image of content otherwise.
+
+--> When web page get loaded below steps happens behind the scene.
+	1) Web page load raw HTML and parse that HTML to form DOM(Document object model) DOM is tree like structure of all elements present in html.
+	2) Just after loading HTML web page load CSS present in the head tag of the html. And parses it it to form CSSOM (CSS Object mdoel)
+	3) By combining both DOM and CSSOM we get render tree , which again is tree like structure of all elements but with proper CSS
+	4) Visual formatting model take render tree and finally render the visual page we see.
+
+--> While creating CSSOM out of css browser parse the css and while parsing first it resolve conflicts. conflicts here arise when single element have multiple styles.
+	there are certain rules of precdence of the css rules.
+	1) css properties marked with !important overrides all other css properties.
+	2) inline css override the other css like ids, classes or elements.
+	3) Id > classes > element-name this is order of precdence of the selectors.
+	4) if both selector don't have inline css or id and have classes selector. again one which have more number of classes in selector will override other.
+	5) if number of classes are also same then order of source which file was included last in html head element will override other.
+	6) usually we should add our custome css files at end while including in html file.
+
+--> parsing of CSS3 happens in two small steps. first it resove conflicts of css properties. i.e. if there are lot of css properties using different 
+    selectors then it decide which one to apply depending on css precdence. In next and second step it resovle all relative units while rendering like %, vw,vh etc.
+
+--> In css we can use differnt units give font-size ,width , margin , padding etc. some of units are absolute and some of them are relative.
+	 absolute units: cm, mm, inch, px, pt (inch/72), pc (inch/6)
+	 It's important to understand relative units.
+	 1) em: this unit is usually used for font size and relative to current font size of element. if element don't have font-size then it must be inheriting 
+	        from parent element and so on. let's say element currently have font-size: 16px then if we give font-size: 1.5em means  1.5 * 16 = 24px.
+	        although it's relative to font-size of element it's not just restricted to use for font-size we may use it at other places as well.
+			IMportant: when we use em unit for width, padding etc then em will refer to font-size of current element and not parent element.
+			however if we want to use this for font-size then it will relative to font-size of parent element.
+	 2) rem: relative to font size of the root element. Now in HTML5 root element is nothing but html element. if we set font-size 24px to root element.
+	         we further can give relative font size to all elements within html tag using rem unit. it's just relative to that root elemet's font value.
+			 again it's not restricted to just fon't size.
+	 3) vw: 1vw means 1% of width of viewport.
+	 3) vh: 1vh means 1% of height of viewport.
+	 4) vmin: 1 vmin means 1% of minimum dimension of viewport i.e if viewport is 100x200 then it would be 1% of 100px.
+	 4) vmax: 1 vmax means 1% of maximum dimension of viewport i.e if viewport is 100x200 then it would be 1% of 200px.
+	 5) percentage: this is always relative to parent elemetn. be it font size , width ,padding or else. 
+	 relative font size is extremly important while designing responsive web pages, especially rem unit.
+	 for responsive design we should set root font-size: in percentage. if we don't set anything by browser setting it's 16px. so if we
+	 want to reset root size in our css instead of doing. html {font-size:10px} we should html{font-size:62.5%} because 62.5% of 16 = 10
+	 and in this case if user change browser setting to larger font then our root font size will also get changed relatively because of percentage.
+
+--> You might have seen value inherit for most css properties when you inspect the browser. When we don't define any css property for any child element
+	it inherit the that css property from parent element. This is called inheritance in CSS3. Now important thing here is not all properties are inherited.
+	We don't need to remember which properties get inherited and which don't get inherited. We can just use our common sense. ex. imagine if properties such as 
+	padding, margin are getting inherited from parent element to all it's child, grandchild and so on... it would be mess.
+	So we can ask ourselves which properties can be safely inherited ex. background-color, font related properties etc. properties which are not inherited 
+	are like padding, margin ,position in fact all who moves element.
+	although inheritance is applicable by default for some of properties as we have seen however we are always free to tell browser explictly that 
+	for this element inherit this property from parent. ex. padding: inherit; now we are explicitly telling that inherit padding from parent element.
+	important: Here is most important thing about the inheritance. Let's say parent has 1.5rem and our root element has font size 16px.
+	           font size of child element is not 1.5rem but 24px. because parents value are calculated first and then they are applied on child element.
+	
+
+--> like border of element we have outline but here are the key differences.
+	outline is not part of css box-model but border is. outline dosen't respect border-radius or something like that.
+	if we increase border overall of size of element will increase as it's part of the css box-model. In case of outline width of element remain same.
+	But outline width may overlap with other element. it will make other content to hide behind it.
+	If we apply both outline as well as border both then after padding border comes first and then comes outline. 
+
+--> Every element in browser can be considerd as reactangular box and this is famously called as css box model.
+	in Box model fron center of box innermost is content of element which has height and width of element. 
+	then comes the padding of element. then comes the border of element and finally the margin of element.
+	total dimension of element consist of content width, width and border. so if we keep on any of them then total dimension size of element 
+	will increase in the browser.
+	When we apply background color it get applied to all area covered by dimensions. Even border will get background color if we don't give it color explicitly.
+	margin is around the element hence background color will not get applied to it.
+
+--> As we saw in box model total dimension of element = padding + border + content width. Now when we say width: 100px border:1px and padding:10px
+	that means  total width of element will be 100px + 20px + 2px = 122px. If we want padding and border to be part of width itself then we have important css 
+	property called box-sizing: border-box; In this case total dimensional width of elemtn would be just 100px.
+	
+--> we have usually elements of of two type inline element or block elelment. we also can make elelemnt inline or block by display property.
+	by default p , div,  all heading tags are block level element and other tags such as buttons, form elements, span etc are inline elements.
+	display: inline; we can not apply width and height in this case. there is no line break after and before element. width would be equal to contents width.
+	                 we can apply padding to all side but display:inline element but margin we can add horizaontally. padding works on all side.
+					 
+	display: block; we can apply width and height in this case. there is line break after and before element. width would be equal to contents 
+					width + padding + border. we can apply padding and margin both to all side.
+	display: inline-block; exactly similar to block element except that it's width would be equal to contents width and there is no line break before and after.
+
+--> when we say width:100%; that means contents width would be 100% and anything extra like padding , margin and border will make it's parent element to scroll.
+    obviously we can get rid of thay using box-sizing: border-box;
+	when we say width:auto; that means block level element will have 100% width but padding , margin and border are included in it and it's parent element 
+	will not scroll.
+
+--> when we apply float propoerty all subsequent elements will ge impacted. to avoid it we can say clear:right/left/both; on element wheere we want to stop.
+
+--> position: static; Default value. Elements render in order, as they appear in the document flow	
+	position:absolute;	The element is positioned relative to its first positioned (not static) ancestor element	
+	position:fixed;	The element is positioned relative to the browser window	
+	position:relative;	The element is positioned relative to its normal position, so "left:20px" adds 20 pixels to the element's LEFT position	
+	position:sticky; The element is positioned based on the user's scroll position element will be not fixed until it goes to top or bottom of parent element.
+	         and once it goes to that position it will get fixed there.
+
+--> sass is css preprocesor that adds power and elegance to the css. We write sass code which is elegant compared to css and then compiled it back to css 
+    to use in browser. we need to process sass code to css before we use it in browser thats why it's called as css preprocessor.
+
+--> Below are some of highlight of sass.
+	1) variables: we can use variables for different purpose such as color, spacing etc. otherwise in css if we want ti change color we will have to
+       change it everywhere where that particular is used.
+	2) Nesting: we can write css selectors one inside other in sass.  due to this outer selector becomes the parent of inner selector and outer properties
+	   get applied automatically to the inner child element. this minimise the rewriting the css properties which common for both parent and child element.
+	3) OPerators: in sass we can use mathematical operators.
+	4) Partials and Imports: in sass we can import other sass files in current file. this is very useful when we want to breakdown css into multiple files.
+	5) Mixins: we can write resuable code.
+	6) functions: similar to mixins which return value which can be used anywhere we want.
+	7) Extends: like parent and child smares similar properties. if we want to share some properties form othere selector we can extends those rules in other 
+	   selector.
+	8) control directives: we can write complex code using conditions and loops although it's not needed in most of real projects.
+
+--> while writing sass code we can write it in two types of syntaxes. sass and scss. in sass curly brackets are not used to enclose css properties.
+	while on other hand in scss we use curly bracket to enclose css properties. Since scss and css have similar syntaxes mostlr devlopers use scss syntaxes.
+	scss stands for sassy css.
+
+--> in sass for declaring variable we have syntax $variableName: value;  and while using  background-color: $variableName;
+
+--> in sass nesting we can nest parent and child element like below.
+	ul {
+	    background: yellow;
+		
+		li {
+			font-size: 20px;
+		}
+	}
+	without scss we need to rewrite this as ul {} and ul li {} respectively. which is like writing more code.
+	also another thing is when we style pseudo classes of element we have to add another selector but scss we can do as below.
+	li {
+		color: blue;
+		&:first-child {
+			margin-left: 0;
+		}
+	}
+	this is similar to li{} and li:first-child{} two selectors. & in this case works as this keyword. i.e. curret selector.
+	we can use & fo styling differnt pseudo classes like :first-child,:hover,:link,:active,:visited also for pseudo elements like ::after, ::before.
+	Although it is very useful for pseudo classes and elements it not only limited to them. if we give naming carefuly to classes then it also can be 
+	applied to form child class name.
+	ex. .parent{ parent css..}  .parent_child_1{child1 css..} .parent_child_2{child2 css..}
+	now what we can do is we can nest child inside parent like below.
+	.parent{	
+		parent css..		
+		&_child_1{
+			child1 css..
+		}
+		&_child_2{
+			child2 css..
+		}
+	}
+	in above example what happen is & will get replaced by current selector .parent so that to foem child class name.
+	when we write & inside selector, resulting selector is separate selector and not child of selector inside which we are writing &.
+
+--> when we have container and all childs within it are floating left or right. then in this case height of element becomes zero. this happens if we do 
+	not cleared floating property. to fix this we have .clearfix class in bootstrap however we also can create that class. just add clearfix class on parent and 
+	then .clearfix::after { content:''; display:block; clear:both}
+	this is also required when all element have absolute position.
+
+--> In sass we have some inbuilt functions which could be handy sometimes. ex. darken(color-value, x%); where x is percentage by which we want to darken the color.
+	similarely we have lighten(color-value, x%) . we can explore more such functions on google.
+
+--> In sass we have another feature which is mixin. it is nothing but multiple line of codes stored in variable which we can use over and over.
+	@mixin mixin-name {
+		color:blue;
+		&:hover {
+			darken(blue,10%);
+		}
+	}
+	now while using we can use it by include keyword.
+	
+	a {
+		@include mixin-name;
+	}
+	all the code lines in mixins will get applied to selector from where we are calling mixin.
+	we also can have parameterized mixin.
+	@mixin mixin-name($value) {
+		color:$value;
+		&:hover {
+			darken($value,10%);
+		}
+	}
+	now while using we can use it by include keyword.
+	
+	a {
+		@include mixin-name(blue);
+	}
+
+--> similar to mixin we also have function in sass. difference between them is, Mixin replace code line of deifinition when we called, and function
+	simply do some logic and return signle value at the end.
+	ex.
+	@function foo($a,$b) {
+		@return $a/$b;
+	}
+	and while calling just foo(60,2);
+	important: we can multiply result by unit to make meaningful value. ex  foo(60,2) * 1px = 30px similarelywe can multiply by any unit wewant.
+
+--> similar to mixin and functions we have another concept called @extend.
+	we can wrap some of properties in %extend-name {} at top of file and then we can call it anywhere we want similar to mixin.
+	%extendplaceholder-name {
+		font-size: 10px;
+		color:black;
+	}
+	while using 
+	li {
+		@extend %extendplaceholder-name;
+	}
+	question quickly arise in our mind is how it's different from mixins? well in mixin we can pass variable if we want.
+	another and most important difference is when we call mixin all code lines enclosed by mixin will ge copied at the place where we have called mixin.
+	where on other hand in case of extends code remains at his defined place only but selector from where we are extending will get copied and pasted as 
+	comma seperated selector. so this is how differntly work behind the scene although most of the time task can be done either one of them.
+
+--> in css strictly color: rgba(233,45,67,0.8); in scss we can write as rgba(#dfg,0.8);
+	
+--> npm is node js package manager tool. using that we can install and manage bunch of js libraires and packages which are really usefull.
+	when we install node js we get npm by default with node.
+
+--> npm init help us to start with node packages. npm init creates package.json for us.
+
+--> npm install packageName ; command is used in cmd to install node ackages. if we add flag --save-dev that package will be added as dev dependency
+	in our package.json. similarely --save means dependency (library which our code might use.)
+	ex. npm install node-sass --save-dev  for compiling our scss to the css code. as we will use it locally for compilation it is dev dependency.
+
+--> why we need package.json? because it contain summary of all packages we are using in our project. if we want to deploy our code or want 
+	to upload our code to git then we can't push all libraries it's not needed simply we will push package.json. and then after we can use just
+	npm install to use all dependencies from package.json.
+
+--> npm uninstall is used to uninstall unwanted packages.
+
+--> using node-sass we can compile scss to css so that browser can understand it. to do so command is 
+	node-sass scssfullfilepathandname cssoutputfilepathandname. generally we write such command in scripts within package.json. in scripts array in package.json
+	we can list out our nicknames for all commands we are going to use in our code.
+	
+	  "scripts": {
+		"node-sass:compile": "node-sass sass/main.scss css/style.css",
+	  }
+	we can have comma separated multiple such scripts to make our life easier so that we don't need to write lengthy commands again and again.
+	
+	 node-sass my-styles.scss my-styles.css: compiles a single file manually.
+	 node-sass my-sass-folder/ -o my-css-folder/ : compiles all the files in a folder manually.
+	 node-sass -w sass/ -o css/ compiles : all the files in a folder automatically whenever the source file(s) are modified. -w adds a watch for changes to the file(s).
+	 further we can add options like --output-style compressed to make css output minified and compresses
+
+--> in Angular we get server automatically. When we work on html5 and css independently we don't have that one. as a result when we do some changes in our code
+	each time we need to refersh the web page to see those changes in browser. node js package manager npm has live-server which can give us free server.
+	once it's installed by npm install -g live-server then all we need to do is go to project folder which contain index.html (must has name index.html)
+	then we have to run command live-server. then automaticallyit keep watch on any file change and once it detect changes in css or html it reload the page.
+
+--> when we work on really large project we have to design sass structure very carefully and meaningfully. we have to make separate files 
+    for animations, typography. also separate file for variables, mixins and functions. Not only file, if things goes more complex we can have different
+	subfolders in folder sass as well. This could seems really hectic but in long run especially for big project it's must have architecture.
+
+--> In css we have calc function which runtime calculate the values. ex width: calc(100% - 20px);
+	However in sass we may wish to pass variable within calc function. to do so we have take special care. we have to write variable as #{$variableName}
+	ex. width: calc((100% - 2 * #{$gutter-horizontal}) / 3);
+
+--> In css we can write attribute selector. for ex .  img[src="val"] { css properties...} all images having  src attribute with given value will get those 
+	css properties. if we omit element name img then it will get applied to all elements which has attribute src with menntioned value. however we have something more 
+	interesting. class is nothing but one of the attribute of the element. hence we can style elements like [class="className"]{} We could have written this simply as 
+	.className {}. But attribute selector is not limited to = sign.
+	[class="col"] ==> all elements whose class name is 'col'.
+	[class^="col"] ==> all elements whose class name starts with 'col'.
+	[class*="col"] ==> all elements whose class name contains string 'col'.
+	[class$="col"] ==> all elements whose class name ends with  'col'.
+
+--> we earlier had seen clip-path properties. This property clip the element itself. background-clip properties clip the background of the element.
+	background-image: linear-gradient(to right, $color-primary-light, $color-primary-dark);
+    -webkit-background-clip: text;
+    background-clip: text;
+	color:transparent;
+	in above set up what we are doing is we are setting background of liner-gradient. Then we are setting color of the element to transparent. 
+	and finally clipping background tp the text. which means background will be visible for only space which is occupied by text. by this our text color 
+	should gradually darken at the end.
+
+--> for outline property we can provide extra property outline-offset:2px; what it does is, it can provide some space between element and outline.
+
+-->  .parent:hover .child:not(:hover) {} with this powerful selector we can target all child elements which are being not hovered currently.
+
+--> Using transform we can create all basic level structures and animations. we can make div look triangular and much more.
+
+--> we have css property filter which take multiple functions as value alonf with paramter to functions. with this propery we can create different effectson images.
+	ex filter:blur(5px) brightness(200%) contrast(200%); we can pass one or multiple functions along with parameter.
+	there are multiple functions like grayscale(%),invert(%) etc.
+
+--> for background-image we had background-size:cover which will cover all element and willl maintainaspect ratio of image. similarely for any child element 
+	we can have object-fit: cover; object-fit: fill; will not maintain asapect ratio.
+
+--> Video tag comes like below by default.
+	<video  src="" class="bg-video__content" autoplay muted loop> </video>
+	disadvantage here is we are able to provide only ony source at a time. if some browser or device is unable to play that particular format then it would be problem.
+	with below syntax we omit src and instead provide source tag with multiple sources. if top one is not supported then next source will be targeted and finally 
+	the warning which user will see if none of format is supported.
+	<video  src="" class="bg-video__content" autoplay muted loop>
+		<source src="img/video.mp4">
+		<source src="img/video.webm">
+		your browser can't play video use hrome laest version
+	</video>
+
+--> in linear gradient we can mention width percentage. at which width what percentage of color we want.
+	linear-gradient(105deg, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.9) 50%, rgba(255, 255, 255, 0) 50%), url(../../img/nat-10.jpg);
+	in above example at 50% we have white at some opacity which will create white background and immediately at same percentage we have transparent background 
+	with zero opacity so that means instead gradually changing from one color to other instantly two diff background we will able to see adjacent to each other.
+	just try above and see magic.
+
+--> input:placeholder-shown this pseudo class we can use to style input element when placeholder is there in element. so as soon as we type something
+	this selector will not be ther ein picture as placeholder will go away.
+
+--> div p :	Selects all <p> elements inside <div> elements be it grandchild or child.
+	div > p: Selects all <p> elements where the parent is a <div> element. here it's not for grandchild.
+	div + p: Selects all <p> elements that are placed immediately after <div> elements. Immediate sibling. let's say div has 2 siblings after it. only first one is targeted
+	div ~ p:	it's similar to  div + p. only difference is it will style all siblings.
+
+
+--> when we are dealing with radio buttons we need to group all of them so that when we select one radio button other which was previously selected will get disselected.
+	we have to give same name="" attribute value to all radio buttons in order to group them.
+
+
+--> In css there is no way to style some of elements like radio buttons, checkboxes etc. we always have to do some workaround for styling them nicely.
+	basic strategy is use pseudo classes of whether button is checked or not and then target that one. we have to create one dummy span element 
+	inside label and then style it using after. try to understand below code for styling radio buttons. more or less in same fashion we can style check boxes.
+	
+	<div class="form__radio-group">
+		<input type="radio" class="form__radio-input" id="large" name="radio-group">
+		<label for="large" class="form__radio-label">
+			<span class="form__radio-button"></span>
+			Large Group
+		</label>
+	</div>
+	
+	.form__radio-button {
+	  width: 3rem;
+	  height: 3rem;
+	  border: 5px solid #55c57a;
+	  border-radius: 50%;
+	  display: inline-block;
+	  position: absolute;
+	  left: 0;
+	  top: -.4rem; }
+	  .form__radio-button::after {
+		content: '';
+		display: block;
+		height: 1.3rem;
+		width: 1.3rem;
+		border-radius: 50%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: #55c57a;
+		opacity: 0;
+		transition: all .2; }
+
+	.form__radio-input:checked + .form__radio-label .form__radio-button::after {
+	  opacity: 1; }
+
+--> in html5 layout we usually have 4 types of tags. <header></header> tag should contain all that is most attractive or anything user is suppposed to see quickly on web page.
+	navigation may be or may not be inside header tag. we have to resue heading styles for diferent heading tags like h1,h2, h3 etc. then for main conttent we have 
+	<main></main> tag.inside main tag we have to oganise different things in with differtn <section></section> tags. finally we have to put footer part inside footer tag.
+
+--> css grid is so powerful that we can stop using bootstrap. It's best way to handle two dimensional layout. Flexbox was capable of handeling one dimensional layout.
+
+--> To start with css grid we have to set display:grid  on parent caontainer. we also can put display:inline-grid; main difference is, inline-grid will 
+	form inline grid that means it will occupy width according to content and not full horizontal width. On t=other hand in case of gird it will occupy whole width 
+	of screen and then space will given to different columns.
+
+--> in css grid unlike flexbox here we can't change direction of flow. always horizontal flow is for rows and vertical for columns.
+
+--> here are the list of all properties that are applied for container.
+	1) grid-template-columns: this property specify number of columns as well as weightage(width) for each column. weightage here is not always necessarily to be percentage.
+	   it takes space separated value of weightage. number of values are nothing but number of columns and their values are weightage for them.
+	   grid-template-columns: 40px 50px auto 50px 40px; here there would be 5 columns. for 4 columns we have defined width and 3rd column has width auto which means take all 
+	                          remaining space. In case of inline grid 3rd one will not take whole width instead it will take width according to it's content.
+	   grid-template-columns: 25% 100px auto; there would be three columns. 3rd one will take all remainig width if it's grid. obviously that won't happen in case of inline=grid.
+	   --> before we go further we have to clear confusion of width units. here we have completely brand new unit for width which is fr. this one is used exclusely for 
+	       grid. percentage is always percentage of the whole container and not percentage of remaining space. hence 85% 100px is always bad practice because we never know
+		   if 100px is 15% or going to exceed that creating some problem. for hard coded values like px, rem , em they are safe to use straightforward to use.
+		   another value is auto and fr. auto and fr works exactly similar if we don't use them together. ex. auto 100px will be similar to 100px 1fr. fr is fraction of remaing 
+		   space. when we use auto and fr together fr win the race. In that case auto will be just like natural width of element according to it's content. 
+	   grid-template-columns: 40px repeat(4,50px); when we have to use identical width for multiple column we can use repeat function. here we will have 4 columns.
+	   we have another function to specify width grid-template-columns: 40px minmax(100px,1fr); this means width would be 1fr but if 1fr is less than 100px then it would be 100px.
+
+	important: In grid system we have grid lines between columns, at the begining of the columns and end columns. so if we have two columns side by side we will have 3 lines.
+		similarely we have those line in between rows as well. so vertical lines as well as horizontal lines. when we define columns we also can give name to all those line although 
+		it's optional. ex. 
+		1) grid-template-columns: [line1] 40px [line2] 50px [line3]; names are necessary because we can refer those lines in future for differtnt purpose.
+		2) grid-template-columns: [line1] 40px [line2] repeat(4, 20px [line]); in this case all rest lines will have same line but while refering them it won't create problem.
+								  while refering we have to give line name and count of line in case of repeat function. 
+								  grid-line: line count; where count is lien number in repeat sequence.
+		1) grid-template-columns: [line1] 40px [line2-1 line2-2] 50px [line3];  one line also can have multiple names.
+	
+	2) grid-template-rows: this property is preety similar to grid-template-columns. in case of columns we were able to define two things. how many columns we want 
+	   and width of the coulumn. In case of grid-template-rows we can specify  height of rows that are going to form. because obviously depending on number
+	   of column and available space number of rows will be decided automatically. for ex. by number of children and number of columns it seems that 5 rows are supposed to form.
+	   but if we give grid-template-rows: auto 20px 50px; then first row will have height auto (according to content i.e. auto work different for height ). second row
+	   will have height 20px, third one will have 50px and then after for remaining two will have height according to content. 
+	   fr unit nehave same as auto in case of height if we don't give give height to parent element. if we give height of parent element then as usual fr unit will be fraction
+	   fraction will take all reaming space.
+	
+	3) grid-template-areas: this property is used to define layout. we can specify here that any specific cel is going to occupy space of two columns.
+	   before we use this proeprty we also need to give name to child element which we want to refer.
+	   ex. .container {display:grid; grid-template-areas: 'header header header'} .item-1{ grid-area: header} in this case first child will occupy space of three columns.
+	   we can define this for all rows and column by giving values in matrix fashion. ex. grid-template-areas: 'header header footer sampleName
+																											    item-2 item-4 sample . .'
+       if we specify dot (.) instead of the area name then that space will left blank and not occupied of any of child element.
+	   if we have let's say 12 child and 4 colums are supposed to form. in this case if we make any child to make spawning over 2 columns by giving gird-area then 
+	   number of rows will automatically increase to for accomodating last childrens.
+	
+	4) grid-template: this property is short hand property of grid-template-columns, grid-template-rows and grid-template-areas. better we can skip using it as syntax
+	   could be complex.
+	
+	5) row-gap, column-gap, grid-gap: row-gap property accept hard coded legth in pixel, rem ,em or in percentage. it defines vertical gap betiween two rows. similarely
+	   column-gap property decides distance between columns. grid-gap is short hand property of row gap and column gap.
+	   ex. grdi-gap: 10px 20px; this will set row-gap to 10px and column to 20px. even one step further we can say grid-gap:10px; which will applied to both.
+	
+	6) justify-items: this property is applied on parent. it has value start, end , center and stretch. stretch means occupy full width. for any other value
+		width of items will be according to their content. there are couple of such properties and it's easy to get confused. so first let's assume each sell has 
+		4 side i.e. top, right , bottom and left. justify items puts item either at left , center , right or full width. default value is stretch.
+	
+	7) align-items: this again is similar to justify-items and has four possible values i.e. start, end, center and stretch. difference is align items put items 
+		either at top, center , bottom or full height. when value is not stretch item won't occupy full height and instead  it will be according to content.
+		default value is stretch.
+	
+	8) place-items: it's short hand property for bot justify-items and align-items. ex. place-items: start end;
+	
+	--> sometimes if we give hard coded value for width of the all items then total size of all cells combined may be less than the actual container size.
+		in that scenario we may have extra width , height or both. if we have extra height then we have to decide where to put whole container?
+		top, center, bottom, have to leave space between rows, have to leave space between rows as well as beginning and end of the row. to deicde this we have 
+		align-content. remember when we say align that means moving rows upwards upwards or downwards. similarely if we have extra width we have all those choices
+		but with columns. and we have justify-content property for this.
+	
+	9) justify-content: this property is applied on container when total width of all columns is smaller than container.
+		start: our grid will be placed at left side of container.
+		end: our grid will be placed at end of the container.
+		center: our grid will be placed at the center of the container (horizontally middle).
+		stretch: this will forcefully make our grid to occupy whole width. (in most cases we will not need this when we already have given fixed width to items).
+		space-around: space between columns and also at beginning and end of the columns. however beginning and end space is smalller than space between columns.
+		space-between: space between columns but not at beginning and end.
+		space-evenly: space between columns , space at start and also at end. but in this case all spacces of equal size.
+	
+	10) align-content: this property is applied on container when total height of all rows is smaller than container height.
+		start: our grid will be placed at top side of container.
+		end: our grid will be placed at bottom of the container.
+		center: our grid will be placed at the center of the container (vertically middle).
+		stretch: this will forcefully make our grid to occupy whole height. (in most cases we will not need this when we already have given fixed height to items).
+		space-around: space between rows and also at beginning and end of the rows. however beginning and end space is smalller than space between columns.
+		space-between: space between rows but not at beginning and end.
+		space-evenly: space between rows , space at start and also at end. but in this case all spacces of equal size.
+	
+	11) place-content: short hand property for justify-content and align-content. ex. place-content: stretch end;
+	
+	12) grid-auto-rows/grid-auto-columns : 	in order to understand these properties which are defined for container we have to understand some proeprties of grid items.
+		we have grid lines for from begining to end, vertically as well as horizaontally. if we have 2 columns and 2 rows then we will have three vertical lines and 3 
+		horizontal lines. we can specify for item, where it begin and where it end with the help of those line numbers. again we can specify line numbers or names
+		if we have given any names (read how to give name if want but numbering is straightforward). ex. grid-column-start: 1; grid-column-end: 4; or using shorthand
+		property grid-column: 1/4; this means that particular item start from vertical line 1 and end at vertical line 4. in same fashion we have grid-row-start and
+		grid-row-end or grid-row (short hand form). now imagine we have define grid such that it will have just 2 rows and three columns.
+		so if we think carefully grid will have 4 vertical lines and 3 horizontal lines. now in this case for any item let's say we specify grid-column: 5/6.
+		problem is line 5 and 6 dosen't exist. internally browser insert those many vertical and horizontal lines (horizontal lines in case of grid-row). but after 
+		inserting, resulting extra rows or columns will have zero width by default. using these properties we can specify width for them.
+		grid-auto-columns: 10px; grid-auto-rows: 10px; 
+		all above stuffs works fine when we explictly place any item using line numbers which dosen't exist. but we can specify grid-auto-columns and grid-auto-rows
+		even when we haven't placed items using line number which dosen't exist. but in that case that will get applied to all columns and rows as there is no extra
+		columns or rows inserted by browser. however those applied values will get overrideed by grid-template-columns/grid-template-rows.
+		columns and rows inserted by browser for adjustment often called as holes.
+	
+	13) grid-auto-flow: this proeprty is used to decide flow. let's say in html grid-container we have  6 items. we defined that we will have 2 rows and 3 columns.
+		now by default their appearance will be  1 2 3 on first row and 4 5 6 on second line. this behaviour is similar to grid-auto-flow: row; simply we are telling
+		fill rows first. we can also say grid-auto-flow: columns; which will start filling vertical lines first. so they will appear on browser like
+		1 3 5
+		2 4 6
+
+	Note:  float, display: inline-block, display: table-cell, vertical-align and column-* properties have no effect on a grid item.
+
+--> we saw all grid container properties now let's see grid items properties one by one.
+	1) grid-column-start: we have to give line number where item will start. we can place individual item at any place we want in grid. we can give line name if it has 
+		any.
+	2) grid-column-end: we have to give line number where item will end. we can place individual item at any place we want in grid. we can give line name if it has 
+		any.
+	3) grid-column: it is short hand property for grid-column-start and grid-column-end. ex. grid-column: 1/2; 
+	
+	4) grid-row-start: line number where item start. (horizontal line number)
+	
+	5) grid-row-end: line number where item ends. (horizontal line number)
+	
+	6) grid-row: short hand property of the grid-row-start and grid-row-end. ex: grid-row: 1/2;
+	 note: for both grid-column-end ang grid-row-end we also can provide some other value instead of line number ex. grid-column-end: span 2; here we are not saying
+	       line number 2 instead we are saying from wherever it start it will span for two columns. ex: grid-column: 2 / span 4; start at line number 2 and span 4 
+		   columns thenafter. we also can give name of line instead of number ex.
+		   grid-column: 2/ span line23; this means item starts at line 2 and span all columns until we reach at line with name line23;
+		   similar stuffs are applicable for grid-row properties as well.
+		   
+	7) grid-area: this property we can use in two differnt ways. first way is give it some name and that name then can be refered in propety grid-template-areas
+		of container. you can see grid-template-areas for more details of this usage. another usage is just simple, it's short hand property of grid-row and grid-column
+		grid-area: grid-column-start/grid-column-end/grid-row-start/grid-row-end. or grid-area: grid-column-start/span 4/grid-row-start/grid-row-end  and all possible types.
+		
+	8) justify-self: we saw justify-items. it was on grid container and it defines where all items should get place i.e.  start (left), center, end or stretch (full width).
+	   justify self achive same thing but on individual item. if we have justify-items on parent then for individual item jusstify-self will override it.
+	
+	9) align-self: we saw align-items. it was on grid container and it defines where all items should get place i.e.  start (top), center, end or stretch (full height).
+	   justify self achive same thing but on individual item. if we have align-items on parent then for individual item align-self will override it.
+	
+	10) place-self: this is short hand proeprty of justify-self and align-self. ex. place-self: start end;
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	

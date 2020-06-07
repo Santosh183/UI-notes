@@ -1,0 +1,2155 @@
+--> javascript is interpreted language. JS engine compile it just before execution at run time. unlike other languages where compilation is one of step before
+	executing the code. in other language we have to compile ocde first and then execute that compiled code.
+
+--> without strict mode which can activated using "use strict" at beginning of the code. if we assign value to variable without declaring it then that variable
+	become global variable ex a=10; here if a was not declared and strict mode is not active then a becomes global variable. however this is true for only 
+	keyword var. if we try to do same using let or const keyword then it will throw error.
+
+--> related to declaration error there are two types of errors that occurs usually. if we try to access variable which is not declared then it is reference error
+	on other hand when compiler find variable declaration but we are performing illegal action with that variable then it will throw type error. ex. trying
+	to call normal variable as function. var a=10; a();
+
+--> when compiler try to find variable it first check current scope. if it can't locate it then it will search for variable in scope which is one step higher
+	and so on. finally it will check global scope if variable is not there in global scope as well then it will throw refernce error.
+
+--> if we have variables with same name in outer scope as well as inner scope with same name then from inner scope it will overshadow outer scope and in this
+	case we will not have access to outer variable from inner scope. when we declare variable in global scope and we declare another variable with same name in
+	inner scope then still we can access global variable by window.variableOrfunctionName because window is global object where all global properties are attached.
+	however this is not true for non global outer scope.
+
+--> scope of variables are decided by compiler when we write code. or in other words scope of variables is understood by compiler  by location where variable is 
+	declared. However in some cases we can trick compiler to disturb such scoping. look at below example.
+	function foo(str ,a) {
+
+		eval(str);
+		console.log(a,b);
+
+	}
+	var b = 12;
+	foo("var b = 23;",24);
+	note: eval function accept string as argument which should contain valid javascript code and it execute it.
+	here without eval function we are creating local variable which will overshadow the outer b=12; hence output will be 24 23. we are changing scope of variable
+	at run time. this is very bad coding practice because without eval js engine knows scope of variables before executing it and hence it optimize the code. 
+	however as eval() is resolved at run time js engine take extra time to execute it as it's not optimized code which affect the overall execution time of 
+	the code.
+
+--> when we use var keyword to declare in javascript it has function scope if variable is within funtion. when we declare lot of variables in global scope
+	after some time we may mess programm by redeclaring same variable. it could end up inducing some logical error  in our code. Good idea is to wrap some code
+	inside function as much as possible. 
+
+--> when we use multiple libraries in our code from different sources, if libraries are not coded in good manner and has lot of global variables then there are
+	chances that some of variables from different libraries may collide.
+	to deal with this dilemma we have two concepts in Javascript.
+	1) Global Namespaces: We can use global namespace. name space is nothing but object where all functionality and variables would be attached to it as
+		it's properties, so that variable collides will not happen.
+		ex: var globalNameSpace = {
+			foo: function(){},
+			var1: 'just variable'
+		};
+	2) modules: this is much modern approach where we can create separate modules for different purpose and then import it from code where we need it.
+	
+--> IIFE(immediately invoked function expression): functions without name which are invoked immedaitely. ex.
+	(function (a,b) { 
+		console.log(a+b);
+	})(5,50); will print 55.
+	IIFE dosen't ncessarily is anonymous function. we can give name to IIFE.
+	ex: (function foo(a,b) { 
+			console.log(a+b);
+		})(5,50); will print 55. alothough we have given name to IIFE we can't use it later as foo(1,2) as it's enclosed within bracket.
+	we may think, why not create just function instead of IIFE. there are certain advantages.
+	1) sometimes we may want to hide some code from outer world. encapsulation. variables declared in IIF are having function scope so they are not accessible from 
+	   outer world. we may create named function but problem here is we again need to call that function explicitly which is unnecessary. another problem is we are
+	   creating one function which may collide with other variable name or function name. as we are using this function only once it make sense to create IIFE.
+
+--> Anonymous function: function without name is called as anonymous function. we can use anonymous function in lot of places like in IIFE, in callback functions
+	ex. setTimeout( function () {
+		console.log('waiting for 1 second');
+	}, 1000);
+	whenever we have to use anonymous function we can replace them with inline function expressions. look at below code.
+	ex. setTimeout( function foo() {
+		console.log('waiting for 1 second');
+	}, 1000);
+	using anonymous function is highly not recommended for below reasons
+	1) when multiple functions calls are in stack traces it's difficult to locate our function as it's without name.
+	2) we may sometime want to refer function name from function itself. ex in case of recursion we want to call function itself.
+	3) even if we don't need name we can give name to function which readable and can help us to understand about code by it's name.
+
+--> for IIFE we have two valid syntaxes.  (function foo(a,b){ console.log(a+B);})(12,23); or 
+	(function foo(a,b){ console.log(a+B);} (12,23)) and both are valid one. both result insame output.
+
+--> when we declare variable with var keyword it create variable which has function scope. with var  keyword there is noway to create block scope variables.
+	{} is nothing but code block enclosed in  {}. some times we may want to create variable for only particular block. this could be very useful for using inside 
+	if statement or for loops. ex. when we iterate using for loop we may not need iterator variable outside loop which can create unnecessary problems.
+	in js in try catch statemet it provide block level scope for variables that we are pssing to catch block but they are useful only for error handeling within that block.
+
+--> let keyword is introduced in ES6 and used to declare variable which has block level scope. it is handy to declare variable inside if {} block or inside block like
+	for(let i=0;i<10;i++) {} we also can create block explicitly to hide variable with let keywords if we want.
+	ex. {let foo = function () { do something here} } foo(); will throw error as it is not accessible outside {} block.
+	for(let i=0;i<10;i++) {} console.log(i); here error will occur as i is not accessible outside of {} block.
+	for(var i=0;i<10;i++) {} console.log(i); here output will be 10. because i is accessible out side of {} block.
+	
+	note: another important difference between let and var keyword is, when we declare variable with let keyword it dosen't get hoisted.
+	ex. console.log(z); will throw error.
+		let z=10;
+	in case of var keyword 
+	ex. console.log(z); will print undefined as z don't have value yet but it will not throw error saying it's not declared.
+		var z=10;
+
+--> similar to let keyword ES6 also introduced const keyword which again has block level scope. difference here is const variable are constant and are not allowed to change
+	there value. ex. const r = 10 ; r=12; will result in error: Uncaught TypeError: Assignment to constant variable.
+	const variables are also not hoisted.
+
+--> Hoisting: this is one of important concept in JS world. Just before execution comiplation phase happens in JS. during that phase lot of stuffs happens like code 
+	optimization. One of such stuff is hoisting. Throughout the code JS engine check for declaration of variables and functions and keep it at top of their scope.
+	As those variables and functions are assumed at top by JS engine it has name hoisting.
+	ex. a=2;
+		var a;
+		console.log(a); // print 2 because var a; is assumed at the top of scope means even before a=2; statement.
+	1) note that only variable and function declaration is hoisted and not assignment. means assignment will happen at place where value is assigned.
+	   ex. console.log(a);
+	       var a=2; // will print undefined. because Js engine read var a=2; as cobination of two statements. first is var a; and second is a=2;
+		   from this Js engine put only declaration statement at the top of scope and not the assignments. hence while printing a was available so 
+		   no refernce error but value was not assigned to it hence undefined.
+	2) functions declaration are also hoisted at the top of scope. if have function definition and not function expression then it will be put at top of scope.
+	   ex. 
+	   foo(); // will print hello because function declaration is hoisted at the top of scope.
+	   function foo() {
+			console.log('hello');
+	   }
+	3) as we saw functions definition and declaration are hoisted at top of the scope but function expression are not hoisted.
+	   ex. foo(); // will throw foo is not function. still it not reference error.
+	       var foo = function() {
+				console.log("hello");
+		   }
+		// in above code compile will put variable declaration at top like var foo; then will call foo(); (obviously will throw error) and then will assign foo = function(){}
+	4) when we assign function as expression to variable then variable is available for calling that function but function itself won't be available by it's own name.
+		ex. 
+			var foo = function buzz() {console.log('hello')};
+			foo(); // will print hello
+			buzz(); // will throws refenrce error saying buzz is not declared.
+	5) when we have both function and variable declaration with same name then function has precedence over variable and hence variable declaration is ignored.
+		ex.
+			foo();
+			var foo;
+			function foo () {
+				console.log(1);
+			}
+			foo = function () {
+				console.log(2);
+			}
+		above code will print 1. because variable declaration var foo; is ignored by compiler assuming we already have function with that name. but we had declared variable
+		before function right? well after hoisting function goes at top of scope even above variables.
+	
+--> Closure: When function is returned from function it still remember it's original lexical scope (variables and functions of it's original scope) such function is closure.
+	ex.
+	function foo() {
+		var d = 2;
+		console.log(d);
+		var functionTemp = function () {
+			console.log(d);
+		}
+		return functionTemp;
+	
+	}
+	var temp = foo();
+	temp(); // will print 2
+	
+	temp collect function returned by  function foo(). all variables and function which were in scope of functionTemp are still accessible for temp as well.
+	1) though most common form of closure is returned inner function, we also can find closure in some other ways. like passed function as parameter ex.
+		function foo() {
+			var a=9;
+			function baz() {console.log(a);}
+			fooTemp(baz); // passing function as parameter here. that parameter is closure. because it will remember current scope whereever it go.
+		
+		}
+		function fooTemp(funcT) {
+			funcT(); // will print 9
+		}
+		foo();
+	2) one of the famous illustration of closure is inside setTimeout function like below.
+		for(var i=1;i<=10;i++) {
+			setTimeout(function doo(){
+				console.log(i);
+			},i*1000)
+		}
+		// output here would be 11 11 11 11 .. 10 times 11.
+		important thing here is whenever we encounter multiple setimeout statement in sequenece or in loop always sequence will get competed first.
+		in short always loop will complete execution first by setting time out function code for each iteration. now once for loop is ended we are out of loop.
+		so 10 functions which are ready to be executed are out of for loop now. they are closure now and will refer to i from loop only. i here in this case
+		is same and refered by all 10 closures. when loop ends at that time i would be 11. and hence 10 functions would print 11. so total 10 times 11.
+	3) When we want separate copy of variables for each function we need that variable in scope of that closure itself.
+		let's try to assign such variable for each function.
+		for(var i=1;i<=10;i++) {
+			( function () {
+				setTimeout(function doo(){
+				console.log(i);
+				},i*1000)
+				}
+			)();
+		}
+		// in above code we have created IIFE to execute setimeout statement but still functions are refering to outer i and that i is common for all of them.
+		   so still output would be 10 times 11. unsuccessfull attempt. let's try again.
+		  for(var i=1;i<=10;i++) {
+			( function (i) {
+				setTimeout(function doo(){
+				console.log(i);
+				},i*1000)
+				}
+			)(i);
+		  }
+		  // in above code i in console.log is not the i from for loop but it's i as parameter to function hence each IIFE has it's own copy of i which is being 
+			passed to the function going to be executed inside setimeout. each function call has it's own copy hence value is different for each copy.
+			so original i becomes 11 after loop ends but our 10 closures are no more refering to that value instead they are refering to local copy of i. whose
+			value was decided in it's own scope each time. output here would be 1 2 3 ..10.
+		another way could have been like below but anyway it's just another way to create local variable to that insider function.
+		  for(var i=1;i<=1;i++) {
+			( function () {
+			var j =i;
+				setTimeout(function doo(){
+				console.log(j);
+				},0)
+				}
+			)();
+		  }
+		// instead of passing parameter we are creating local variable with value of i inside function which again will give us output 1 2 3.. up to 10.
+		
+		// let (a=2) { console.log(a);} is valid grammer in js and similar to 
+		 {
+			let a =2;
+			console.log(a);
+		 }
+		 
+	4) as we have seen creating local scope to insider function will print from 1 to 10 so another way to create local scope is quite easy and we don't even need IIFE.
+	   let keyword has block level scope and hence each time it execute blocks {} it create new scope for each iteration with ewn value.
+	   for(let i=1;i<=10;i++) {
+				setTimeout(function doo(){
+				console.log(i);
+				},0)
+				
+		}
+		// in above code as we are declaring i with let which has block level scope it create fresh new copy of i for each iteration and hence prints  1 2 3 ..10
+	   
+
+--> Modules: Famous module pattern in JS is based on closures. look at the below code.
+	function ModuleExample () {
+		var privateOne = 'I am private One';
+		var privateTwo = 'I am private Two';
+		function printPrivateOne() {
+			cons.log(privateOne);
+		}
+		function printPrivateTwo() {
+			cons.log(privateTwo);
+		}
+		return {
+			first: printPrivateOne,
+			second: printPrivateTwo
+		}
+		
+	}
+	var tempModule = ModuleExample();
+	tempModule.first(); // will print 'I am private One'.
+	
+	We are wrapping some of functionality inside module and exposing only few to outside world. when we return some functionality in form of functions
+	those functions still have access to the inside private worls. In fact those function are closures.
+	we can return public API of module to outside world while hiding some inner functionality. Here we are achiving encapsulation.
+	
+	1) ES6 introduced standard syntax for modules. whatever we designed in normal js using module pattern is nothing but just function and compiler never treat it 
+	   differntly. Execution of function happen at runtime. However in ES6 each file is considered as separate module and we can export Public API from one file (module)
+	   so that other file (other module) can import those public API and use it.
+	   
+	   ex.
+	   
+	   file1.js inside this file we have below code.
+	   function introduce(who) { console.log("Let me introduce :" + who);}
+	   export introduce;
+	   
+	   file2.js inside this file 
+	   import introduce from 'fullpath/file1.js';
+	   var temp = "sample name";
+	   introduce(temp); // will print "let me introduce: sample name"
+	   
+	 // in ES6 modules compiler knows these are the modules even at compile time. and hence it check if imported API of any modules are present in exported module or not.
+	    otherwise it will throe error even before execution.
+
+--> Arrays, functions and everything except primitive data types are objects in javascript. However when we refer to this keyword from function, this dosen't refer to 
+	function object. ex.
+	foo = function () { console.log(this.a)} 
+	foo.a =5;
+	foo(); // will print undefined
+	// in above code foo was function object. since it was object we can add proeprty to object using dot operator so we added a property to that object.
+	// from function we refered to this keyword which will refer to global window object when we do not call function with new keyword.
+	// hence we were trying to access global variable a form function which is not present but the moment we wrote this.a it got added to gloabal object but with undefined
+	   value.
+	// there are three methods call, apply and bind which can decide what should be this keyword for function but it's different story.
+
+--> There are few ways how this behaves inside functions.
+	1) default binding: In this type this keyword refer to global window object by default.
+		ex.
+		function foo() {
+			console.log(this.z);
+		}
+		var z =11;
+		foo();// will print 11.
+		// in above code function dosen't have it's context defined using method like call, apply or bind. hence by default it will point to global window object.
+		   we also know that by default all global variables are present as properties of the global window object in JS hence it will print 11.
+		// important thing here is, this default binding won't work when work in strict mode.
+		ex. function foo() {
+				"use strict";
+				console.log(this.z);
+			}
+			var z =11;
+			foo();// will throw error.
+		// another thing we should keep in mind is "use strict" has effect only inside function where it is written and inside inner functions.
+			ex. function foo() {
+				console.log(this.z);
+			}
+			var z =12;
+			(function () {
+				"use strict";
+				foo();
+			})();
+			// above code will print 12 without any problem because use strict is applicable only from anonymous function IIFE and dosen't have effect in foo function hence
+			   it will print 12.
+
+	2) implicit binding: when we bind function as property of any object then this keyword from that function will refer to object itself and can access other properties.
+		ex.
+			function foo () {
+				console.log(this.prop1);
+			}
+			var obj = {
+				prop1: "Santosh",
+				fun: foo
+			}
+			obj.fun()// will print "Santosh"; still if we just called foo(); it will print undefined.
+			// here we are making function as property of one of object and hence it can access other properties of that object using this keyword.
+			// we must have to call function on object in order to make this keyword to point to that objet.
+			ex.
+			function foo () {console.log(this.a)};
+			var obj = {
+				a:2,
+				foo:foo
+			};
+			var foo2 = obj.foo;
+			var a = 12;
+			foo2(); // will print 12 instead of 2 because property foo of object and foo2 are two different refernces to the same function. but they are not exactly same. 
+			another more confusing example could be passign function as callback function ie. parameter to another function.
+			ex. function foo() { console.log(this.a)};
+				var obj = {
+					a:2,
+					foo:foo
+				};
+				var a = "global";
+				setTimeout(obj.foo, 1000); // will print "global" after 1 second because obj.foo is refernce and while executing it it will refer to global a.
+			
+			// thumb rule is until and unless we invoke it in obj.foo() fashion, this keyword inside function will never point to object itself rather it will point global
+										      window object if there is no strit mode.
+
+	 3) Explicit binding: On Every functions prototype there are some functions available which can enforce explicit binding of object to that function.
+		1) call(): Call() function enforces binding of object passed as argument to this keyword inside function.
+		           ex. function foo() {
+						console.log(this.a); // prints 10
+				   }
+				   var obj = {
+						a:10
+				   };
+				   foo.call(obj);  // after this foo will have object obj as this keyword. hence output would be 10.
+				  here we are invoking foo with explicit binding with the help of call() in built function. call() is available for all functions as it sits on prototype of 
+				  each function.
+				  we also can pass additional parameter to function which could be just regular paramter. In this case we need to pass first parameter as obj which we cant as
+				  this keyword and then other regular parameter.
+				  ex. function foo(par) {
+						console.log(this.a + par); // prints 15
+				   }
+				   var obj = {
+						a:10
+				   };
+				   foo.call(obj,5);
+				  all functions are instance of Function object hence due to inheritence each function has call(), apply() and bind().
+		2) apply(): Apply is same as bind except only one thing. that is while calling if we want to send additional paramater which are useful in function 
+		            we need to pass them in array.
+					ex. ex. function foo(f,g) {
+						console.log(this.a +f +g); // prints 16
+				   }
+				   var obj = {
+						a:10
+				   };
+				   foo.apply(obj,[2,4]);
+		
+		3)bind(): bind() is little different than call and apply. In bind we need to pass comma separated parameter similar to call.
+		          main difference is call and apply invoke function immediately with setting this keyword. bind instead return function 
+				  which we can invoke in future.
+				  ex. ex. function foo(v) {
+						console.log(this.a +v ); // prints 14
+				   }
+				   var obj = {
+						a:10
+				   };
+				   var temp =foo.bind(obj);
+				   now while invoking we need to pass parameter.
+				   temp(4) // will print 14.
+	
+	
+    4) Hard binding: In this way output is same as bind however without using bind.
+                  ex. 
+                     function foo(parameter) {
+						console.log(this.name, parameter);
+					 }				  
+					 obj = {
+						name:"santosh"
+					 };
+					 var bar =  function () {
+						return function (par) {
+							return foo.apply(obj, par);
+						};
+					 }
+					 bar();// is similar to foo.bind(obj);
+					 var temp = bar();
+					 temp("dd"); // will print "santosh dd"
+					 var temp1 = foo.bind(obj);
+					 temp1("dd") // will produce same output "santosh dd"
+	
+	5) new Keyword: in javascript constructor is nothing but function. when we invoke any function with new keyword that functions behaves like constructor.
+	               ex. function Foo(a) {
+						this.a=a;
+				   }
+				   var obj = new Foo(3);
+				   console.log(obj.a);// will print 3.
+				  // note that when we want to use function as constructor famously their name starts with block letter but that is just convention.
+	
+--> Let's summarize this keyword in JS in few lines.
+	1) with new keyword it refers to newly constructed object.
+	2) with function call with apply, call or bind it refers to object passed as paramater
+	3) with hard binding even without using inbuilt bind functionality we can achieve it with normal js code. it will refer to object passed similar to bind().
+	4) if there is none of above binding then it will refer to window object provided code is not written in strict mode. if there is strict mode then this is 
+	   undefined.
+
+--> despite above all rules and understanding there are exceptions where above rules may not work.
+    when we pass null orundefined in instead of meaningful oject in call(), apply() or bind() then this keyword will refer to window object as per default binding.
+	question arise here is why would someone send null or undefined. may be by mistake or in some cases even we can pass it intentionally . surprised rt?
+	it has it's own advantage. imagine we have method which accepts comma separated arguments and return sum of all. we have array of numbers.
+	what we can do in this case is 
+	     foo.apply(null,[1,2,3,4,7,4,78]) // where foo accepts comma separated numbers and return sum of all. we will get our sum in this case also we are not 
+		 disturbing default binding of this keyword. i.e. even from inside foo() function this keyword will refer to window object.
+    -> now important point to note here is in ES6 nowadays we could have done job very easily with spread operator like this 
+	    foo(...[1,2,3,4,7,4,78]);// array will get spreaded and will send as comma sperated values. However using apply we can do without using spread operator.
+
+--> Another important thing which indirectly linked with this keyword is arrow function () => {};
+	Arrow function simply borrow this keyword from outer scope. where outer scope may be global scope or may be some other function.
+	here is very nice example.
+		function foo() {
+			return () => {
+				console.log(this.a);
+			}
+		}
+		var a = 10;
+		var obj = {
+			a:12
+		};
+		foo.call(obj)(); // will print 12. as we have set obj as this keyword for outer function inner arrow function refers to same and prints 12.
+	
+	Note that in case of normal inner function it has nothing to do with outer function's this keyword although for other variables it's different case.
+
+		function foo() {
+			return function insider() {
+				console.log(this.a);
+			}
+		}
+		var a = 10;
+		var obj = {
+			a:12
+		};
+		foo.call(obj)(); // will print 10. because unlike arrow function inner function refers to it's own this keyword. as in our example it dosen't have it'same
+		own it refers to window object and hence prints 10.
+	Funny workaround here is we still can achive behaviour similar to arrow function using inner function like below.
+		ex.
+			function foo() {
+				var self =this;
+				return function insider() {
+					console.log(self.a);
+				}
+			}
+			var a = 10;
+			var obj = {
+				a:12
+			};
+			foo.call(obj)();
+	
+--> we can create objects in two basic forms. one is literal form and another is using new keyword. there are may ways but these two are most common.
+	literal form: var obj = {key:value}; 
+	using new keyword: var obj = new Object(); boj.key = value; in this way we have to append properties one by one. we also can send {key:value} as argument
+	to new Object({key:value,key1:value1});
+	In practice we hardly use constructer form of object.
+
+--> In javascript there are only few basic data types. string, number, boolean, null, undefined and object. there are some other types like array , functions
+    but they are nothing but objects so everything that holds true for object is true for functions and arrays as well. 
+	note: typeof null ; returns object but in fact type of null is null. however for knoweldge purpose typeof null; prints object. typeof undefined is undefined.
+	note: out of those basic data types there are 5 primitive data types. i.e. string, number, boolean, null and undefined.
+	note: typeof function(){} will return function and array for any array.
+
+--> We can create object but in javascript there are alerady lot of inbuilt objects we can create by calling there constructor.
+    String,	Number,	Boolean, Object, Function,	Array, Date, RegExp and Error.
+	It's very uncommon to use these constructors. they are constructors i.e just normal functions which we are supposed to invoke using new keyword.
+	
+--> we can create string using new String('some string') as well as simply by var b ='some string' but there is small difference in both.
+    typeof new String('some string'); returns Object;
+    typeof 'some string' returns string;
+    As their types are different new String('some string') == 'some string' will evaluate to true but new String('some string') === 'some string' will evaluate to
+    false.
+
+--> when we invoke any functionality on string literal what happen actually is , string get converted automatically to String Object and then 
+    that functionality get invoked. because functionalities are present on String object and not on string primitive data types.
+	thiese type of coersions happen all time in JS.
+
+--> in JS always properties of object are nothing but refernce to some location where values are stored. 
+
+--> we can access object properties either using dot operator or using array like notation. Property names are always supposed to string.
+    when we give any other name like number or some name without quotes then that is automatically converted to string.
+	ex. my obj ={};
+	obj[3] = 'value';
+	obj['sds-fdf!'] = "value2" // not that here you can assign property name with any possible string using [] notation which is not possible using dot.
+	obj['3'] // will print value
+	note: if we want to give name to property with some special characters in string then we use [] operator in JS.
+	      however in ES6 we have [] operator which we can use even in literal as well.
+		  ex.
+		  obj = {
+			  ['som-!' + 'vv'] : 'value'
+		  };
+		  obj['som-!vv'] // will print value;
+		 so by using this ES6 feature we can give dynamic property name to object.
+		 obj[foo()] = 'value' // assume foo is returning some property name.
+
+--> Arrays are nothing but objects but has numeric indexing. Arrays are objecr as previously said so we are free to add properties to array as well 
+    though we houldn't do it in real time.
+	ex. var array =[0,5,6,'santosh',{}]; // arr.length =5
+	    array['extra'] = 'value'; // arr.length  = 5
+        note that in above example after adding property to array which may behave as normal object length in unchanged because when we invoke length on array 
+		it always return total number of element in array it dosen't count its properties.
+		// if we try to add properties to add with numeric name then it assume that numeric value as index and hence it is added as array element rather than prop.
+		ex. array = [5,'santosh',4,2]; // array.length prints 4
+		    array[8]= 12; // array.length will print 9 because we directly add 12 to index 8. in between values would be empty. i.e. array[7] is undefined.
+			but still it's elements are created.
+		note: this is where important difference between looping on array comes in picture. if we use for(var r in arr) then it excludes empty i.e. undefined values.
+		      and in that case if we want to loop over those element then we have to use our regular for loop using length as limit.
+	// arrays are well structured in memory location than object. despite the fact that in JS array can store multiple data types.
+
+--> One of the biggest requirement for developers is copying object. when we normally assign one object to another object both old and new object is refernce to 
+    same memory location.
+	ex. obj ={id:12,name:'santosh'}; obj2 = obj; obj2.id =100; obj.id ; // will print 100
+	so in this content is same as well as refernce is same and obj == obj2 as well as obj === obj2 both returns true.
+	as we see both object gets modified if we don somethin on either of them hence it's copying like this is not good idea.
+	// there is one hackish way to copy one object to other but it's not safe if object dosen't have JSON like structure.
+	   ex. obj = {id:12,name:'santosh'}; obj2 =JSON.parse(JSON.stringify(obj)); obj2.name="chaitali"; obj.name;// prints santosh
+	   in above case both objects points to different memory location and they are compeltely different object with same property values.
+	   hence obj == obj2 will return false in this case.
+	// in ES6 we have spread operator but this operator also does not copy object properly
+	   ex. obj = {objProp: {id:2}, prop: 2}; obj2 = {...obj}; obj2.prop =4; obj2.objProp.id = 10; 
+	       console.log(obj); will return {objProp: {id:10}, prop: 2}; 
+		we can see by this method, it does trick for copying one level but still at second level property refernces are pointing to same memory location.
+	// ES6 introduced Object.assign(targetObj,sourceObj) method to copy one object into other.
+	   ex. obj = {id:name,name:'santosh'}; Object.assign(obj2,obj); obj2.name='sample'; obj.name;// prints santosh
+	   note that in this case target paramater must be of object type so we better should intialize with empty object first like obj2 ={};
+	   in this case two objects are compeltely different and hence obj == obj2 would have returned false.
+	// all above methods does not copy meta data of properties. each property of each object has some extra data such as if property can modified etc.
+
+--> there are two methods on Object which returns metadata of any object properties.
+    Object.getOwnPropertyDescriptors(obj); accept object and return object wil all properties and their metadata.
+	ex. obj = {id:12,name:'santosh'};
+	    Object.getOwnPropertyDescriptors(obj); 
+		// returns
+		 { 
+			id: {
+				value: 12, 
+				writable: true,
+				enumerable: true,
+				configurable: true
+			},
+			name: {
+				value: 'santosh', 
+				writable: true,
+				enumerable: true,
+				configurable: true
+			},
+		 }
+	Object.getOwnPropertyDescriptor(obj,prop) can be used when we want metadata of only particular property of object. it will return metada of that property.
+
+--> WE have Object.defineProperty(obj,prop) or Object.defineProperties(Obj) which are capable of modifying metadata of the properties of object.
+    we can create brand new object property or we can modify existing property of object using these methods.
+	ex. obj = {a:10}; 
+		Object.defineProperty(obj,'id',{
+			value:99,
+			configurable:true,
+			writable:false,
+			enumerable:true
+		});
+		obj.id=20; // allows modify statement but it actualy won't change value. in strict mode it even throws typeerror.
+		console.log(obj.id);// will print 99 as property is not writable and hence can not be modified.
+	// method Object.defineProperties(obj, [{},{}]); can be used when we have to modify multiple properties in one go.
+
+--> while modifying metadata of object properties we have three things for now.
+    1) writable: by default this is true for each object property. if we changed it to false then we can not assign any new value to that property. 
+	2) configurable: by default configurable is true. configurable means whether we can change metadata proeprties in future. as configurable itself is metadata
+	   so funny things is once we changed configurable to false then there is no way to turn it back to true. so we have to handle it with cautious.
+	3) enumerable: this property decide whether property is visible in enumeration. for ex. if we set enumerable to false for property then that property will 
+	   not appear in for(var item in obj) loop and Object.keys. however it is accessible by natural for loop which we use. by default it's value is true.
+	   // there is even method obj.propertyIsEnumerable('property-name'); which return return true if it is enumerable.
+
+--> there are tiw important things to keep in mind when we set configurable to false.
+	1) after setting configurable to false still we can modify writable however only from true to false. but we will not able to modify from false to true.
+	2) after setting configurable to false delete operator will seilently fails. we will not able to delete properties of object using delete operator.
+
+--> We can make object constant by creating object as constant. ex. const obj ={}; so that norefernce would de assigned directly to that obj.
+    However still we can change propeties of the object which is declared as constant. in order to make them truely constant we have to set writable 
+	and configurable to false. so that nobody will able to assign new value to object also nobody will change configuration.
+	// still problem in above method is one will able to add new properties to object. to avoid it we have Object.preventExtensions(obj);
+	   by this way nobody will able to add extra property to the object. if you try to add new proeprty in strict mode it will throw typeerror.
+	// we have inbuilt Object.seal(obj) which not only stop us from adding new property bu also makes all properties configurable false.
+	   however writable remains true in case of seal.
+	// we have another inbuilt method which is Object.freeze(obj). this method does everything it make every property writable:false and configurable:false.
+	   also internally it does Object.preventExtensions(obj) on object. One flaw still remains is if value of property itself is refernce to object then we can 
+	   modify those values. to get rid of this then we may need to call Object.freeze() on every individual property of object as well. if we don't know
+	   how many level we have to do it we may use recursion.
+
+--> like other object oriented language we can have getter and setter in javascript object though it's rarely used. When we assign value to object using
+    dot operator then automatically setter of object would get called and when we access value using dot operator then getter of that particular property 
+	would get called.
+	ex.
+		var obj = {
+
+			get a() {
+				return temp;
+			},
+			set a(val) {
+				this.temp = val*2;
+			}
+		};
+		obj.a = 3;
+		this.temp; // will return 6 as well.
+		console.log(obj.a);// will print 6;
+		// name get and set functions is nothing but property of i=object for which we are defining those getters and setters.
+		// temp is nothing but one intermediate property of object which we need to use otherwise return this.a; will go in infinite loop as this.a invoke 
+		   getter. and hence it would be never ending recursion.
+		  v 
+--> Sometimes it is necessary to identify if object has certain property. look at the below scenario.
+	ex.
+	    var obj { a:undefiend};
+		var.a; // will print undefined
+		var.b; // will also print undefined as it does not exist on obj. in case of variable when we try to access variable which does not exist it throw error.
+	// to deal with this there are two ways.
+	   1) ('a' in obj); will return true if a does exist on obj otherwise will return false.
+	   2) obj.hasOwnProperty('b'); again it return false if property does not exist on object otherwise it return true.
+	   // in operator in first method find if property exist on object or not. It dosen't care if property is of it's own or inherited from it's parent.
+	      on other hand in second method it determine whether property exist on object of it's own. in operator actually traverse through prototype chain 
+		  to the prototype of the parent most object in the hierarchy. 
+
+--> Every object has hasOwnProperty method available because every object inherit it from prototype of Object. There is exception when we create object using 
+    Object.create(null); in this case we can borrow method Object.prototype.
+	ex.
+		var ff = Object.create(null); // create objece {}
+		Object.prototype.hasOwnProperty.call(ff,'a'); // will return false as ff dosen't have property 'a'
+		ff.a = 'asdf'; // added one property
+		Object.prototype.hasOwnProperty.call(ff,'a'); // will return true
+
+--> there are different type of iterators in JS to iterate over objects and arrays.
+	1) for..in : this iteraor helps to iterate over array and object for any iteration it return proeprty in case of object or index in case of array.
+	   further we need to manually access values.
+	   // note that for..in is abe to access the properties which has enumerable:true.
+	   ex. var arr = [1,2,4]; var obj = {id:12,name:'santosh',sal:10000};
+	   	   for(var i in arr) {console.log(arr[i])} // will print 1,2,4
+		   for(var i in obj) {console.log(obj[i])} // will print 12,'santosh' and 10000
+	
+	2) forEach(); this function accepts paramter callback function which do whatever we want with that paricular instance.
+	 ex. var arr = [1,2,4]; 
+	 	 arr.forEach( (el)=> {console.log(el)});
+	 // this iterator works only with array. if we return from callback function it just ignore it and continue it's operation until end element
+	
+	3) every(); this function again accept callback function as argumets. we can invoke this function on array. iterative action stops when we return falsy
+	   values from callback function. if we do not return anything then it will iterate over only first element as returning nothing is similar returng undefined 
+	   which again is falsy.
+	   ex. arr = [1,2,4,5]
+	    arr.every( (el)=> {console.log(el); return el>0;}); // returning true so that it iterate thru all array
+
+	4) some(): this is similar to every. only difference is it stops iterations when call bcak function returns true values.
+	   ex. arr = [1,2,4,5]
+	      arr.every( (el)=> {console.log(el); return el <0;}); // returning falsy so that it iterate thru all array
+	
+	5) for (var v of arr) : this is newly introuced in ES6. in this iterator type difference we get direct access to values instead of properties.
+	   ex. arr = [2,4,5];  for(var v of arr) {console.log(v)}
+	   // this iterator only works for array.
+	
+	6) for of iterator internally call one method. we can implement same mechanism manually as well.
+	ex. var myArray = [ 1, 2, 3 ];
+		var it = myArray[Symbol.iterator]();
+		it.next(); // { value:1, done:false }
+		it.next(); // { value:2, done:false }
+		it.next(); // { value:3, done:false }
+		it.next(); // { done:true }
+	
+	// note that iterating array using our regular way by length as limit is differnt than these iterators in one way and that is it always 
+	   have predefined sequence. however in iterators mentioned above most of times sequence of element is correct but we can not gurantee it.
+
+--> Class is nothing but package which contain some structure of data i.e definition to make it's copies along with all functionalities (functions or methods)
+    Classes supports some oops like inheritence and polymorphism. Ex. We make once class where general implementation is there i.e. Vehicle. and then we can make new 
+	class where more specific implementation ie. Car. in vehile we may have some properties which are common to all vehicles and they can be inherited in car object.
+	this mechanism is called as inheritence. On other hand we may also define some functionality in vehile which is common to all vehicle. ex. fillFuel() function.
+	now in child class we can override that functionality if needed. this mechanism is called is called as polymorphism.
+	
+--> In languags where is classes are basic things properties of parent class get inherited by child class. In JS atlease before (ES6), we don't have suh implicit mechanism.
+    however we can have similarity through special function called mixin which simply copy properties from parent class to child class.
+	ex.
+	function mixin(child,parent) {
+		for (var key in parent) {
+			if(!child[key]) {
+				child[key] = parent[key];
+			}
+		}
+		return child;
+	}
+	var parent = new Parent();
+	var child = new Child();
+	mixin(child,parent);
+
+--> Every object in JS has prototype property when it's created. It always has non null value except for few exception. When we try to access proprty of object it checks 
+    if object has property. if it's not there it will check on prototype of object. on prototype there all proeprties which object got from some other object by inheritence.
+	ex. obj1 = {a: 10}; 
+	    obj2= Object.create(obj1);
+		obj2.a =10; first it will search on obj2 , it's not there so it will search on prototype where all inherited properties are present so it get a from obj1.
+	Object.create() method accept object as parameter and give us newly created object which will have properties of passed object present on it's prototype.
+    On Object we tried to access to propery which is not present even on prototype then it will return undefiend.
+
+--> When we use for..in loop for traversing on all properties of object it will iterate on all properties which are directly present also properties from prototype.
+    Search for properties through prototype is chain process. if it's not on prototype also it will look on prototype of parent object and so on.. until Object.prototype.
+	which is on top of hierarchy.
+	
+--> Let's have another closer look on prototype. 
+	ex. obj1 = {a: 10}; 
+	    obj2= Object.create(obj1);
+		obj2.a ; will return 10 as we saw.
+		note: if we change obj1.a; changes will reflect on obj2 also. 
+		obj2.a =20; //now at one sight it looks like we are changing value of existing proeprty from prototype but we are not. we are creating new property which
+		              will sit directly on obj2 and not on obj2's prototype. In this case in future when we try to access obj2.a it will return it's own 
+					  instead of from prototype due to precedence. However same property will also present on it's prototype with different value.
+					  i.e. obj2.prototype.a ; will return 10. further if we do obj2.prototype.a = 25; this change will also reflect for obj1;
+    So in conclusion properties inherited from other object are present on prototyp and if we change them it will reflect in parent object also.
+	
+--> Concept explained in above code samples are important and we should use them with utmost caution if needed.
+    ex. d = {}; by default d will have toString() method on it's prototype.
+	    d.prototype.toString = function () {console.log('I am hijacked')}; // here we are actually changing implementation of directly Object.toString.
+		hence whatever object we create further will refer to this hijacked definition of the function.
+		dd = {};
+		dd.toString(); // I am hijacked.
+	In order to override original toString method we should have add toString proeprty to object which will override toString of prototype while accessing and will not 
+	impact other object.
+
+--> Concept of adding property to object even if that proeprty is present on it's prototype is called as shadowing of properties. we saw how added property overrdide 
+    while accessing it. However this is true only when property which is inherited is writable. if inherited property is read only then neither we can modify it 
+	nor we can add new property with that name, so there is no question of overrdiding it.
+	ex. eee = {};
+		eee Object.defineProperty(eee, "prop1", {
+			value: "test",
+			writable: false
+		});
+		var ee = Object.create(eee);
+		//in this case  in strict mode ee.prop1 = 10; will throw error and without strict mode it would not throw error but will fail anyway. will fail silently.
+		// in this scenario we still can add propery to object using method defineproperty method available on Object.
+		i.e. Object.defineProperty(ee,'prop1',{value:'testNew'}); in this it will override even after property is only readable.
+
+--> var anotherObject = {
+		a: 2
+	};
+	var myObject = Object.create( anotherObject );
+	anotherObject.a; // 2
+	myObject.a; // 2
+	anotherObject.hasOwnProperty( "a" ); // true
+	myObject.hasOwnProperty( "a" ); // false
+	myObject.a++; // oops, implicit shadowing!
+	anotherObject.a; // 2
+	myObject.a; // 3
+	myObject.hasOwnProperty( "a" ); // true
+	// in above example implicit shadowing is happening. when we do i++; it's similar to i=i+1;
+	hence myObject.a = myObject.a + 1; is executed. // while accessing first time it access property of prototype but while creating it create new property with same name.
+	now in future it will access newly added property.
+
+--> in JS when we called any function with new keyword it behaves differently.
+	1) it creates object of that function type. this is not similar to typical Class which we see in other languages.
+	2) this keywords inside functions refers to object being created.
+	3) prototype of cuntion is attached to pototype of object that is being created.
+	function Foo() {
+	// ...
+	}
+	var a = new Foo();
+	Object.getPrototypeOf( a ) === Foo.prototype; // true
+	// we said it's not similar to typical class in other languages because instead if creating copy from that class it link prototype of function to object.
+	   hence when we create object through it, all things present on prototype of function become part of objects created.
+	// this means if we manipulated prototype of any objected created through that function then changes will reflects in subsequently created object and object created in past.
+	// constructor are in JS are nothing but normal functions only difference is we call them with new keyword however if we don't call them with new keyword 
+	   still nothing will happen. it will behave like normal function, code withi will get executed and this keyword within function will refer to window object.
+	// When we wish to add new property to object  there are three ways.
+	   1) add property by modifying constructor function. this will make sure that new property is available to to all future object but not to already created ones.
+	   2) Manipulate prototype of object. this will add property to all objects i.e. past as well as future objects which are linked to prototype of manipulated object.
+	   3) using dot operator. this will add property to that specific object only and not to any other object.
+
+--> in Js prototypical inheritence we link prototype of child object with that of prototype of the parent object.
+	ex. Bar is child object and Foo is parent object then.
+	    Bar.pototype =  Object.create(Foo.prototype); // if we asign directly like bar.prototype = foo.prototype; then both will share same copy which we don't want.
+		Bar.pototype = new Foo();// thi is yet another famous trick to achieve inheritence however with this method linkage of prototype will happen but along with that
+		it also will execute some code which could be uncessary in case of bar. hence Bar.pototype =  Object.create(Foo.prototype); is cleanest way to achieve it.
+		
+	function Foo(name) {
+	this.name = name;
+	}
+	Foo.prototype.myName = function() {
+	return this.name;
+	};
+	function Bar(name,label) {
+	Foo.call( this, name );
+	this.label = label;
+	}
+	// here, we make a new `Bar.prototype`
+	// linked to `Foo.prototype`
+	Bar.prototype = Object.create( Foo.prototype );
+	// Beware! Now `Bar.prototype.constructor` is gone,
+	// and might need to be manually "fixed" if you're
+	// in the habit of relying on such properties!
+	Bar.prototype.myLabel = function() {
+	return this.label;
+	};
+	var a = new Bar( "a", "obj a" );
+	a.myName(); // "a"
+	a.myLabel(); // "obj a"
+
+--> in Es6 we have classes to create boject. at first sight it seems similar to other languages like Java , .net etc. but it's not. In other languages once class is declared
+    and we created object, we can not add other properties to that object. In js we can. Apart from that we have other syntactical functionalities like keyword super(),
+	extend keyword to inherit parent class etc.
+	ex.
+		class Person {
+
+			constructor(name){
+				this.name = name;
+			}
+			
+			displayName() { return this.name}
+
+		}
+		class Employee extends Person {
+
+			constructor(name,id){
+				super(name);
+				this.id = id;
+			}
+			
+			getEmployee() { 
+				return "Name: "+ super.displayName() + "  id: "+this.id;
+			}
+
+		}
+		
+		var emp = new Employee("Santosh kadam" , 23);
+		emp.getEmployee(); // will return "Name: santosh kadam  id: 12"
+
+--> In JS we have 7 data types. undefined, null, boolean, string, object, number and symbol. 
+    // except object all are primitive data types. object is derived data type.
+	// symbol is primitive data type and is added in ES6. ex. let symb = Symbol("optional description"). here we don't need to use new keyword.
+	   each symbol is different even if they created with similar description. i.e. Symbol("descr") == Symbol("descr") returns false.
+	   due to this advantage is two symbols are always different that each other. 
+
+--> typeof operator return string value as type of variable or value we mention.
+    ex. typeof "34"; string
+	    typeof 43; number
+		typeof {a:"Santsh"}; object
+		typeof Symbol(); Symbol
+		typeof undefiend; undefined
+		typeof true; boolean
+		typeof null; object.
+		
+	// null and object are two different data types in js but ironically enough typeof null returns object.
+	   if we want to check if value is indeed null then we can check by a=null; (!a && typeof a === "object");
+    // apart from this typeof also return function for functions however function is not one of data type in JS as it mislead.
+	   instead it's subtype of type object. As function itself is object it can have properties. 
+	   ex. function foo(a,b,c){}; foo.length; return number of parameter it was declared with.
+	// typeof [1,2] return object although it seems like it should be array similar to function.
+
+--> In javascript functions if function was declared with 4 parameter and we passed only two parameter while calling function them remaining two (last two) would be having
+    values undefiend while execution of function.
+
+--> Let's clear doubt of undeclared variable vs undefined variable. undefined variable means one which is declared but has no value assigned. undeclared is one
+    which is not all declared. In real programming. if we try to refer undeclare variable it will throw TypeError.
+	However despite this core difference typeof both is undefined.
+	ex. var a;
+	    console.log(a);// undefined
+		console.log(b);// will throw TypeError
+		typeof a; undefiend
+		typeof b; undefined.
+	How can we check if variable exist or not?
+	there is one clever idea. if(typeof b === undefined ) // this is will check if variable exist or not.
+	if(b) {}; would have thrown error because in order to check b it should exist.
+	// there is another idea to check if variable already delclared or not.
+	  if(!window.a) { var a =9;} // window object wouldn't throw error even if property does not exist. no object do that in fact.
+	                                problem however with this approach is window object might not be always accessible like when we do server side programming.
+
+--> This is fact is very important aspect of keyword var to understand.
+    ex. 
+	    var a;
+		var bool = false;
+		if(bool) {
+		 var b =8;
+		}
+		let b =8;
+		console.log(b);
+		// in above code in first stage even if bool i false variable b get hoisted. hence it's already declared even though we don't wish to do so.
+		   so let b =8; will throw error saying it's already declared.
+
+--> in ES6 we can use || operator in different style apart from logical or.
+    true || false will return true; false || true; return false;
+	var a; var c=90;
+	var b = a || c; // this wouldn't result in any true or false; instead it will check if a is undefined c will be assigned to b;
+	
+--> In JS array you can stor any data type. even we can have array as one of element of array and in that case we can access it similar to two dimensional 
+    array in other languages.
+	// when we make hole in array in between elements are empty. if we deliberately try to access them we will get undefined. however arrays legth get increased.
+	 ex. arr = []; arr[1]=90; now array[0] is empty. 
+	     arr.length ; //2.
+		 arr[0] ; undefined
+	// holes in arrays also get formed when we explicitly delete array element using delete operator.
+	  ex. delete arr[1]; will cause two holes. still arr.length will return 2;
+	// when we try to access index of arrays which is beyond length we wil get undefined. however if we assigned undefined to any index explicitly then in between
+	   indexes are empty and creates holes by increasing legth of the array.
+	// One important difference between empty indices i.e holes and element whose value is undefined by explicit assignment is later are accessed by some iterator operator.
+	  ex. var arr = []; arr[2] =90; // created two hole in array.arr.length;//3
+	      arr[0];undefined.
+		  arr[1];undefined.
+		  arr.forEach(function (i){console.log(i)}); // will print only 90. it won't access emppty indices i.e holes.
+
+--> Internally arrays are nothing but object hence we also can add properties to array.
+    ex. arr = [1,4,5,7]; arr.ex = "example";
+	arr.ex; will return "example" but still legth of array remains same.
+	// gotcha here is if we do something like this
+	 arr["5"] = 78; internally due to coercion string get converted to number and get added as real array elemtn on that index which obviously will change it's length.
+	 
+--> Strings in js are immutabe means when we try to modify string instead modifying it's original version it create newer one and return with those modification
+    in place.
+	// arrays are not immutable to tey have .reverse() method string don't have.
+	   ex. var temp = " reverse me if you can";
+	       var challengeAccepted  = temp.split("").reverse().join(""); // will reverse string.
+
+--> In Js strings are not array of string characters. charAt(i) method return character at passed index. 
+
+--> In Js we have number data type which covers both integers as well as decimal. hence a=98; is exactly same as b=98.0; a===b will return true.
+    // 0.23, .23, 23.0 and 23. all are valid numbers in JS without any error.
+
+--> very big numbers in js are often printed as multiple of exponetials. ex. var a = 4.5e10; is similar to var a = 45000000000; b= 1/a will return 4.5e-10;
+    // we have a.toExponential() method if we want to convert number in that form explicitly.
+	// any number in js can access all method from Number.prototype.
+	// atoFixed(2); will round number to 2 decimal points.
+	// 42.toFixed(2) is wrong syntax because processor thinks 42. as decimal number and expect digit after decial not method name.
+	   however it read other syntaxes like i.e. 32.5.toFixed(3); without any error.
+
+--> one of the infamous js gotcha in js is 0.1 + 0.2 === 0.3 return false;
+    // this is because internally in binary representation of floating point in JS is not accurate hence 0.1 is very close to 0.1 but not exactl and so are the other numbers.
+	   0.1+0.2 result in 0.30000000000000004 ; hence it return false when compared.
+	   to resolve this problem we can write below workaround code snippet which is widely accepted.
+	   ex. 
+	   function compareTwo(n1,n2) {
+		
+		return Math.abs( n1 - n2 ) < Number.EPSILON; // Number.EPSILON is javascript constant which is equivalent to 2.220446049250313e-16. 
+		                                             // so we are saying if difference in number is that small then please ignore it.
+	   }
+	   var a = 0.1 + 0.2;
+	   var b = 0.3;
+	   compareTwo(a,b); // will return true.
+
+--> In JS we have lot of constant available on Number which denotes some value. ex. Number.MAX_SAFE_INTEGER; denotes maximum possible integer in JS.
+    other such constants are Number.POSITIVE_INFINITY, Number.NEGATIVE_INFINITY, Number.MAX_VALUE and Number.MIN_VALUE.
+
+--> We have void operator in JS which empty out any variable. ex. var w =90; void w; will result in emptying out the w. so w will have undefiend value.
+
+--> In JS any primitive data types can never have refernce like other language.On other hand all compound or dervied data type such as functions, arrays and objects
+    are internally treated as array. hence when we assign one object or array to another vaiable then change in any of place will refelct at both places.
+	ex.  var arr = [1,2,3,4];
+	      var b = arr;
+		  b[4] =5;
+		  arr;// will be [1,2,3,4,5];
+		// this is not true when we altogether assign new refernce to variable.
+		   var b= arr;
+		   b[4]=5; this make both arr as well as b [1,2,3,4,5] 
+		   b = [2,3,4]; // this will not impact arr because b get new refernce completely and not modification in original reference which was shared.
+
+--> in JS we have lot of inbuilt constructor functions to create object wrapper around native values.
+    String(). Number(),Boolean(), Array(),Object(), Object(), Function(), RegExp(),Date(), Error() and Symbol().
+    behavious of native value and such object created from these constructor are different in behavior.
+    ex. new String("Santosh") == "Santosh" ; return true but new String("Santosh") === "Santosh" false. becuase typeof new String("") is Object.
+	ex. if(new Boolean(false)) { console.log("true")}; this statement will print true because new Boolean() create object. Object are always evalutated to truth.
+	// to get value of such object we have valueOf method. new Boolean(false).valueOf(); will return false.
+
+--> all values except some values like "",null undefined etc. are truthy in JS. however "43" == true; will return false.
+    because internally in order to compare both side js internally try to coerce them to same data type. true to 1 and "43" to 43 so 1== 43 is false.
+
+--> we can have labelled loop in JS.
+    ex. foo: for( var i=0;i<5;i++) { // adde label foo to outer for loop
+			for( var j=0;j<5;j++) {
+				if(i == j) {
+					cosole.log(i + " "+ j);
+					continue foo; // this dosen't mean go to foo. this means for loop with label should stop current iteration.
+				}
+				
+			}
+		}
+		// will print 1 1, 2 2, 3 3, 4 4 , 5 5
+
+--> within from any JS function we can get access to all arguments passed using arguments keyword. it is array containing all arguments passed while calling function.
+	// arguments array holds or points to the variable passed and actual value.
+	  ex. function foo(a) {
+		  a = 43;
+		  console.log(arguments[0]);
+	  }
+	  foo(2);//// will print 43 and not 2
+
+--> similar to other languages in JS we have try catch block.
+    ex. function foo () {
+		try {
+			return 34;
+		}
+		catch(e) {
+			console.log(e);
+			
+		}
+		finally {
+			console.log("call ended");
+		}
+		console.log(" function last line");
+	}
+	foo();// will print 34 call ended. because finally will exceute irrespective whether there was error or not. last console statemtn will not get executed because
+	      //  function already was terminaed when it returnd some value.
+
+--> In javascript lot of code from our program is supposed to asynchronous and not synchronous.
+    ex. var data = ajax("https://sample.api.com");
+	    console.log(data); // data would be undefined as ajax request is asynchronous code.
+	// to get rid of this dilemma we have famous call back functions to handle this.
+	   var data = ajax("https://sample.api.com", function(data) {
+		   console.log(data); // will print data which is response of the API.
+	   });
+
+--> JS always run in some en vironment which hosted it. Sometimes it's browser, sometimes it's serverside environment. In both cases event loop i.e. decision of which 
+    to fire and when is managed by environment whisch has hosted js engine and not by js engine itself.
+	Each future events such as callback function are present in queue of events which is managed by event loop. In order to get better understanding of event loop
+	below is pseudo code.
+	var eventLoop = [ ];
+	var event;
+	// keep going "forever"
+	while (true) {
+		// perform a "tick"
+		if (eventLoop.length > 0) {
+			// get the next event in the queue
+			event = eventLoop.shift(); // this basically remove first even fro eventloop array queue and immediately execute it or throw error in case there is any.
+			// now, execute the next event
+			try {
+				event();
+			}
+			catch (err) {
+				reportError(err);
+			}
+		}
+	}
+	// above is pseudo code so it's just for understanding. We can see how events are removed from beginning one by one and executed.
+	// note that setTimeOut(); is also future event but it's not added in queue immediately when statement of setTimeOut is executed but it's rather placed
+	// in event array when time set is expired.
+	ex. setTimeOut(()=> {console.log("Im in set time out")}, 5000); // this statement is not future event. it set future event but statement itself is not future event.
+	    // above statemtn get executed immedaitely.
+		// .. 5 seconds passes.
+		// now callback of setTimeOut is added to event queue. If there are already few events in queue they get finished first and then our code will get executed.
+		// hence we can gurantee that our code in setTimeOut will not execute before 5 seconds but we can gurantee that it will get executed imediately after 5 secs
+		// if there are some other events in queue. Execution of simple statement is extremely fast so we may not experience it but it sometimes happens.
+	// Sometimes I/O operations in JS are also nothing but events in eventloop and hence if there are some events in queue prior to operations
+	//	(this may sometime happen in browser) then I/O operations takes some time to execute.
+	// ex. var obj = {index:2};
+       console.log(obj.index);
+	   obj.index++;
+	   // in some of browser it may print 3 instead of 2 because I/O operations sometimes can take time to execute and in that case index++ will get executed first.
+
+--> In JS there is important concept call asynchronous programming. Note that multithreading and asynchronous ptogramming are quite different concepts. Multithreading means
+    twp piece of codes are running simultaneously. Asynchronus means some one or more pieces of code can run in future after certain condition satisfied and meanwhile other 
+	execution will take place.
+
+--> When we make two AJAX call and pass two different functions as callback for both calls both of them would be resolved and executed once we get response. but note 
+    that once first call back start it's execution by resolving then it will finish first and then second call back will start it's execution even if it's resolved when
+	execution of first call back was going on.
+	// in ES6 we have genrators which allows us to stop execution in between but that is different topic.
+	here is example of asynchronous code which gives output according to above understanding.
+	ex. 
+	setTimeout(()=> {console.log("I am in set time out")},1000);
+	var a = 1900;
+	while(a>0) {console.log("I am in while loop "); a--}
+	// in order to print statement 1900 times it takes more than 1 second but it started execution earlier than setimeout and hence it will finish all loop first and 
+	// then it will print output for setTimeOut code lines.
+
+--> Let's say we have ajax call to some API which returns array of millions of record. If we do not handke this overload either at Ui side or backend side, then for time 
+    which required to fetch records browser will get hanged i.e. no Ui actions and nothing. to get rid of such situation we can create small batches of of records.
+	ex.
+	var res = [];
+	function response(data) {
+		res.concat( data.splice(0,1000)); // remove first 1000 records from response and append to res. not records are permanetly removed .
+		if(data.length > 0) // if still records are present then execute below code
+		{
+			setTimeOut( function() {
+				response(data);
+			}, 0); // after 0 millisecnods again call response function which will clip off 100 records and so on.. no need to give time gap as it's separate event itself and
+			       // would be in event loop queue.
+		}
+	}
+
+--> In event Loop queue we saw that when we schedule events for future it's added to event queue from which events get executed one by one sequentially. Similar to events
+	we have jobs in JS. they work similar to events in queue except that they have higher priority over events. Let's imagine we have schedule() function which schedule 
+	jobs and not events and then look at code below.
+	ex. console.log( "A" );
+		setTimeout( function(){
+		console.log( "B" );
+		}, 0 );
+		// theoretical "Job API"
+		schedule( function(){
+			console.log( "C" );
+			schedule( function(){
+			console.log( "D" );
+			} );
+		} );
+		// if jobs were just normal events then it would have print A,B,C,D but in above code we have assumed that schedule function schedule jobs and not a events hence 
+		// it will print A,C,D,B
+	// Promises which is one of important topic in async programming is heavily depdendent on above concept.
+
+--> In Asynchronus javascript programming event loop is executed and unit which is fed to event loop is nothing but function which is called as callback function.
+	In fact call back is most fundamental async pattern in javascript.
+
+--> Note that all call back events are nothing but building block of event queue where each element in queue is nothing but call back function.
+	ex. 
+		console.log("A");
+		setTimeout(()=> { console.log("B")},1000);
+		console.log("C");
+		// any such program there two parts, now and later. In above code A and C are now parts and B is later part. All now parts get executed right away 
+		// in sequentially and later part then get fired depending on condition or firing time period or response in case of ajax calls.
+		// in above code processing is like this, do A, then schedule callback for B, then do C, then wait for scheduled event  and then do C. hence will print A, C, B
+	// even if we modify code like below.
+		console.log("A");
+		setTimeout(()=> { console.log("B")},0); // waiting period is zero
+		console.log("C");
+		// even in above code result would be the same because now part will get executed immedaitely and then later part. 
+		// only difference is it will wait for 0 sec. By the way waiting time count get started as soon as event is scheduled. loo at important example below.
+		// ex. there are three lines of codes. first line need 2 sec for execution which print hello, second line is seTimeout with 2 sec delay and print hi.
+		// third line let's say take 1 second to execute and print bye..
+		// execution starts at line 1: it prints hello and 3 seconds are passed since beginning of program.
+		// second line get executed i.e. it schedule event with timer... still only 3 seconds are passed for now bcoz sscheduling event itself take  less than
+		// millisecnod. but here countdown for event is started. now third line took one second and printed bye. now for scheduled event 1 second of waiting time is over.
+		// so it will wait for another 1 sec as total waiting time was 2 sec. so after waiting for another 1 sec even will be pushed to event loop. js engine will check
+		// if there are any events in event loop , most probably it's empty because we don't have any other lines of code. so after adding to event loop it get executed
+		// immedaitely . in case if there were already events in event loop then it would have waited to finish execution of those events first.
+	//One more twist.
+		console.log("A");
+		setTimeout(()=> { console.log("B")},1000);
+		var i = 1990;
+		while(i>0 ) {
+		console.log("C");
+		i--;}
+		// in above code now part includes while loop as well which take more than 1 sec to execute.
+		// hence output would be A, 1990 times C and then B.
+	// note that setTeimout means add this callback to queue after this much time and not like execute this after this much time.
+
+--> In JS asynchronous programming is similar to our brain. Our brain never do multitasking. If we are talkin on phone with someone while typing that means
+    we are switching the context of tasks in our brain very fastly and handle both task but that never happen at the same time. breathing , heart beat happens 
+	same time but those are other tasks which we don't need to handle. Similarely in JS we switch context from one task to other according to event queue.
+	
+--> In event loop when particular unit is picked for executing we can fire some function when that particular event is picked.. such functions are called as callback
+	functions.
+--> When we have scenario like do asynchronous task A, once it's done then do B and then only do C. we often may face this while working with APIs. in this case
+    we have to pass callback for A, in that callback we will be invoking B and in callback of C we have to do C. this leads to very complex nesting of callback 
+	functions which is not fun to be honest. this nesting of callbacks is often refered as callback hell. neither it looks good, nor it's readable.
+	while debuging such nested callbacks it's difficult to understand flow even for experienced devlopers.
+	1) call back hell is one of serious drawback of callback functions when it comes to managing asynchronous code.
+	2) Another drawback is trust issue. See, we often pass callback function to some third party library who is supposed to invoke our function after particular
+	   time or after getting response. We have no idea if by mistake that third party library invoked our callback 3-4 times or never invoked at all.
+	   this dosen't seems big issue at first sight but if we are working with financial application dealing in millions dollar we will have to take this into account.
+	   so trust issue of third party library could be another drawback of the callback functions.
+
+--> To get rid of above disadvantages of the callback functions we have promises in JS. Promises are nothing but future values. in case of callback third party library.
+    has control to execute our callback function however in case of promise, instead it just return promise. To which we can pass callback to get our 
+	work done. Here confusion might arise that still it accept callback but remember third party dosen't have control on that callback. So promises remove 
+	trust factor fear of callback. Also promise can chained to form proepr syntax which is much easier to read. 
+	ex.  foo(){ 
+			var promise = api_request_1();
+			promise.then(
+				(data1)=> return api_request_2(data1);
+			).then(
+				(data2)=> return api_request_3(data2);
+			).then(
+				(data3)=>console.log(data3);
+			).error(
+				(err)=> {console.log(err)}
+			)
+		}
+		// syntax looks much cleaner.. it's chaining of API call where we use call back hell otherwise.
+		// each call back function in then again return promise which get caught by next then in chaining and so on.
+		// note that above is pseudo code. 
+		// error in any of promise in chain get caught at the end in chain or we also can pass individual error call back function to each promise
+		   but this look much cleaner.
+		   
+--> note that if we write two code different flows for single promise then both of them get executed.
+    ex.
+		var promise = api_request_1();
+		promise.then(
+			(data)=> console.log("data1: "+ data);
+		)
+		promise.then(
+			(data)=> console.log("data2 : "+ data);
+		)
+		// let's say data is 12 so output  would be data1: 12 and data2: 12.
+		// both of them are independent flow. 
+		// Another important things we need to remember about promises is , they get added to job queue and not to event loop.
+		   As we already know job queue items has perefence over event loop items for execution. In above example  js engine will add both promises to job queue 
+		   once promise is resolved and then they will get executed one by one.
+		   add first one to job queue; add second one to job queue; do first; do second; As in above example we just have 2 jobs so it would be so faster that 
+		   we will not realise the delay but even before these two jobs if there are some jobs pending then they will take time for execution.
+		// Once promises are resolved they become immutabe objects. No matter how many times we do .then() on that partiular promise them we will always get ame result.
+		// after it's resolution either it succeed or it fails.
+
+--> Another yet obvious difference between callback and Promises is , in call back it's function which get invoked after some event invoke it.
+	in Promises , we get promise in return when some event send us signal. Now it's up to us when and where we can can attach .then to that promises
+	and get our things done. We pass callback to .then() but until we do .then() it will not get executed.
+	// In case of callback functions we have to write down all code which we needs to do in call back. What if we want to do two completely different things
+	   at two different places when call back get triggered? This dilemma is solved using promise because in case of promise we can do .then() to number of times
+	   to the promise.
+
+--> consider followin code where we are manually creating Promise and handeling it in same fashion like some third party libary does for us.
+	function foo () {
+		var num = Number((Math.random()*10).toFixed());
+
+		return new Promise( function(resolve,reject){
+		   if(num%2 == 0){
+				 resolve();
+			} else {
+				 reject();
+			}
+		  
+		});
+	};
+	var promise = foo();
+	promise.then(()=> {console.log("resolved.. means whatever async work was succed .. mostly API ")}).catch((err)=> {console.log(" I got error promise rejected ")});
+	
+	// function foo() we manually created here but mostly it could be some third part library which will return promise.
+	   in our case although task is just to generate random number in between 1 and 10 and check if it's even or not. resolve() from inside callback passed to
+	   promise constructor resolve the promise which trigger .then() which is outside and mostly our code and not from some library.
+
+--> In Above example we saw .then and .catch() chaining. we also can pass both callbacks in .then alone.
+	ex.
+	function foo () {
+		var num = Number((Math.random()*10).toFixed());
+
+		return new Promise( function(resolve,reject){
+		   if(num%2 == 0){
+				 resolve("Messae or data ");
+			} else {
+				 reject(" brutally failed error is sample error , here we have message and error data");
+			}
+		  
+		});
+	};
+	var promise = foo();
+	promise.then(
+			(success)=> {
+				console.log("promise is resolved: " + success);
+			   },
+			(err)=> {
+					console.log(" I got error promise rejected: "+ err)
+				}
+		   );
+	// if you see carefully how external library pass data , success message from foo() (we assue it external library returning promise althou work it is doing is not async).
+	   data we pass while invoking resolve(data) and reject(error) can be received in callbacks passed to .then(). Inc ase of error we also can
+	   receive it in callback passed to .catch().
+	// not that .catch() is more useful while chaining two or more promises. like foo().then().then().catch();
+	   in such chaining if there is error in any of .then() then immdiately chaining stop it's execution and .catch() get triggered and we get appropriate error of
+	   of promise which got rejected. Otherwise, without catch() we would have to pass extra error callback to each .then() which we want to avoid.
+
+--> Although we are glorifying promises let's discuss one of it's problem. We assume that third party library will return promises and then we attach .then()
+	to it and get things done for us. We are happy because in case of callback we have trust issue like , how many times callback will get executed
+	or will it execute even once? That is not in case of callback because third party library just return promise and it's up to us how many time we wish to 
+	do .then() on it. We are happy until now except for one problem. How would we know that object returned from third party library is promise and something else.
+	we blindly are doing .then() on that. Let's try to resolve this with some poor attempts.
+	1) we can check if object is instance of Promise constructor. promisreturned instanceof Promise;
+	   Problem here is if promise is returned from some other window like iframe it's Promise constructor could be different that ours and hence it could fail.
+	2) we can check if it has .then() property available on object or not. again problem is that library can trick us just by sending eom dummy object like 
+	   {then: function() { console.log(" you got tricked")}}
+	// unfortunately there is no concrete solution for this. Still if we are worried we can go with first method as crosswindow communication by promise is rare.
+
+--> From time to time we addressing problems with callback and we are glorifying promises. Here is list of exclusive benefits of the promises.
+	1) Calling to early: Promies are truely asynchronous by their own. This mean even if promise is resolved immediately without doing any async task , still
+	   promises .then() part get executed in asynchronous manner. .then() get added to job queue and hence it's executed in later phase in asynchronous phase.
+	   ex. var p = new Promise(function (resolve,reject)) {
+					resolve(); 
+			});
+			p.then(()=> { console.log("A")});
+			console.log("B");
+			// output would be B A and not A B. because js engine mark .then() part as future job and add it to job queue and then move on to next statement.
+			// once all synchronous statement get executed then only job queue starts executing all items it had accumulated.
+			// note that even loop and job loop are two different queues. Job queue has more perefence than event loop although both are asynchronous things.
+	2) Callback trust issues: In callback case we had trust issue that third party library may execute calbback more than once. Promises ensure this
+	   goes correctly. Actually after getting resolved or rejected promises become immutable objects, third party can't resolve it twice.
+	   ex. var p = new Promise(function (resolve,reject)) {
+					resolve();
+				    resolve();
+					reject();
+			}); // only first statement get executed which resolve promise and then later statement get ignored by promise. Hence even by mistake if someone resolved it 
+				more times we ar not in trouble. It's up to us how many times we have to do .then() on returned promise from third party library.
+			// same  thing happens in case of rejection also. Once rejected later statement get ignored.
+	3) Better error tracking mechanism: In general callback function to catch error or .catch() part of promises are functions which are supposed to catch
+	   some error if they occur during performing asynchronous task. Ex. If something goes wrong in DB we get error from API and that we can catch at our side.
+	   what promises provide is more than this.
+	   ex. var samplePromise = new Promise( function(resolve,reject){
+				foo99();
+				resolve( "B" );
+			} );
+			samplePromise.then(()=> {
+				
+			}).catch((err)=> {
+				console.log("error caught in catch part of the promise: " + err);
+			});
+		// in above example we intentionaly didn't define foo() but still we are calling it which should result in reference error.
+		  that error is handeled well by promise hence output would be .
+		 error caught in catch part of the promise: ReferenceError: foo99 is not defined
+		
+		Another way it also take of error is , error which we may ave in then part itself. look at below two approach to catch errors in promises.
+		p.then(
+			(success) => { console.log("I am happy data is: "+ success)},
+			(error) => { console.log("I am not happy because of error:: "+ error)}
+		)
+		 OR
+		p.then(
+			(success) => { console.log("I am happy data is: "+ success)}
+		).catch(
+			(error) => { console.log("I am not happy because of error:: "+ error)}
+		);
+		// Which we should use and when? Well we already know that when we have chainging of promises i.e one promise return other and so on.
+		   we often do this when we have use response of one API in order to call another one. In that case we should catch() way.
+		   if there is error in any of .then() in chaining like p.then().then().then().catch(); then in catch part we will get that error.
+		   In first approach individiual error get handled in each of promise independently. so catch() approach is better.
+		   Also it has another yet very important reason why catch() is better.
+		   
+		   ex. p.then(
+			(success) => { 
+				foo(); // intentionally calling function which dosen't exist at all.
+				console.log("I am happy data is: "+ success);
+			},
+			(error) => { console.log("I am not happy because of error:: "+ error)}
+		   )
+	   // in above code  we will never get error. although it exist in our then part. Now in order to handle this situation, what promise does
+		  is , when there is error part in our .then() part it again return rejected promise which get tracked in .catch() part.
+		  that mean even in chaining case what happen internally is if even one of promise get rejected that get caught in catch() part.
+		  ex.
+		  var p = new Promise( function(resolve,reject){
+			resolve( 42 );
+			} );
+			p.then(
+			   (success) => { 
+					foo(); // intentionally calling function which dosen't exist at all.
+					console.log("I am happy data is: "+ success);
+				}
+			   ).catch(
+				(error) => { console.log("I am not happy because of error:: "+ error)}
+			)
+		// in above code output would be : I am not happy because of error:: ReferenceError: foo is not defined
+		because error got handled in catch() part of promise.
+		 
+	4) We can convert even other values to promise by using Promise.resovle() inbuilt functions.
+	   // assume we have foo() function which we are not sure can return promise. Sometimes it return value and sometime promise.
+	   p1 = Promise.resolve(promise);// we are passing promise and in return we will get same promise.
+	   p2 = Promise.resolve("sample data"); // we are passing some value or data but in return we will get promise which is resolved with data we passed.
+	   hence p2.then() is possible.
+
+--> We already know that promises get added to job queue instead of event queue. Job queue has first perference over event queue. To understand it proeprly 
+    let's guess output of below code.
+	ex.
+	var p3 = new Promise( function(resolve,reject){
+    resolve( "" );
+	} );
+	var p1 = new Promise( function(resolve,reject){
+		resolve( "" );
+	} );
+	var p2 = new Promise( function(resolve,reject){
+		resolve( "" );
+	} );
+	setTimeout(()=> {
+		console.log("i am call back 1");
+	},0);
+	p1.then( function(){
+		p3.then(() =>{
+			console.log( "C" );
+		})
+		console.log( "A" );
+	} );
+	setTimeout(()=> {
+		console.log("i am call back 2");
+	},0);
+	p2.then( function(){
+		console.log( "B" );
+	} );
+	setTimeout(()=> {
+		console.log("i am call back 3");
+	},0);
+	// first p1,p2 and p3 will get created. all of them are promises.  Creation of promises are synchronous tasks. then there is one setimeout function.
+	// after 0 secs. callback1 get added to event loop. so event queue contain callback1 for now. then we have p1.then which get added to job queue.
+	// then we have callback 2 which get added to event queue. then p2.then part get added to job queue. and finally we have callback3 which get added to event queue.
+	// for now event queue has 3 callbcak to be executed from calllback 1 to callback3. job queue has two. p1.then and p2.then. job queue has perference over event queue.
+	// so job queue starts it's execution with p1.then. here again p3.then get added to job queue and console.log("A") get executed. Now job queue has 2 more jobs
+	// p2 and p3.then which was added recently. p2.then prints B and then finally p3.then prints C. so we have A B C. now event queue starts it's execution
+	// which obviously execute callbacks in sequenece in which they were added. prints. callback1,callback2,callback3.
+	// final output should be A B C callback1 callback2 and callback3.
+	=> In aboove code let's make slight change indefinition of promise p1. 
+	var p3 = new Promise( function(resolve,reject){
+    resolve( "" );
+	} );
+	var p1 = new Promise( function(resolve,reject){
+		resolve( p3 );
+	} );
+	var p2 = new Promise( function(resolve,reject){
+		resolve( "" );
+	} );
+	p1.then( function(){
+		p3.then(() =>{
+			console.log( "C" );
+		})
+		console.log( "A" );
+	} );
+	p2.then( function(){
+		console.log( "B" );
+	} );
+	// in above code we have  resolved p1 with data which again is promise. In this case what happen is promise internally add that passed promise in job queue.
+	// p1.then get added to job queue. p2.then get added to job.  p1.then start execution. but while resolving it pass another promise p3 which get added further
+	// to job queue hence p1 result in p3.then and nothing inside p1.then get executed. now p2.then starts execution and prints B.
+	// now we had p3 which was added by p1.then and not by p3.then.  althought this time p3.then is resolved but p1.then will start execution because p1 
+	// resolution has passed p3 which itself has resoved. so p1.then starts execution. add p3.then to job queue and print A. finally p3.then get executed
+	// which print C.
+	// output would be B A C.
+--> Every time we call .then on promise , tht .then return new promise. Promise returned will have resolved value which we returned from .then callback if fatal we didn
+    otherwise it would get resolved with undefined value. Note that this returned promise is always resolved one.
+	ex. var p = new Promise((resolve,reject) => {
+		resolve(5);
+	});
+	var generatedPromise = p.then((data) => {
+		console.log("in p.then: "+data);
+		return data*2;
+	});
+	generatedPromise.then((data)=> {
+		console.log(" in generated .then: "+ data)
+	});
+	// will print in p.then: 5, in generated .then: 10. because first .then return promise with data which is returned from callback. for our eyes we are 
+	// returnin just data*2 but internally it get wrapped with promise.
+	we can chain it in more sophisticated manner like below
+	ex. var p = new Promise((resolve,reject) => {
+		resolve(5);
+	});
+	p.then((data) => {
+		console.log("in p.then: "+data);
+		return data*2;
+	}).then((data)=> {
+		console.log(" in generated .then: "+ data)
+	}); // which obviously gives us same result. This chaining can go as long as we want.
+	
+	=> Althoug .then by default return promise for us we don't have control on that promise as it immediately get reoslved. to voercome this we can manually return
+	   promise by our own. Another drawback is in default promises which are sent are not depdendent on each other as they are already resolved. 
+	   I mean let's say first p should resolve, then seond one in chain and so on. but that dosen't happen in that case.
+	   ex.  var p = new Promise((resolve,reject) => {
+				resolve(5);
+			});
+			p.then((data) => {
+				console.log("in first: "+data);
+				return new Promise((resolve,reject)=>{
+					resolve(data*2);
+				});
+			}).then((data)=> {
+				console.log("in second : "+ data)
+			});
+		// in above case we are returning our own brand new promise. Hence promise which by default was getting returned is not in scenario for now.
+		// Now main argument here could be , why do even need this as we can simply return data*2?  well may wish to add some time delay.
+		// and hence indirectly hold some control over resolve method by returning our own brand new promise.
+		
+		ex.
+		function delayedPromise(delay) {
+
+			return new Promise((resolve,reject)=>{
+				setTimeout(resolve,delay);
+			});
+			
+		}
+		let d = new Date();
+		console.log("begining flow: "+ d.getHours()+" : "+ d.getMinutes()+" : "+d.getSeconds());
+		delayedPromise(1000).then(
+			()=> {
+				let d = new Date();
+				console.log(".then-1: "+ d.getHours()+" : "+ d.getMinutes()+" : "+d.getSeconds());
+				return delayedPromise(1000);
+			}
+		).then(
+			()=> {
+				let d = new Date();
+				console.log(".then-2: "+ d.getHours()+" : "+ d.getMinutes()+" : "+d.getSeconds());
+				return delayedPromise(1000);
+			}
+		).then(
+			()=> {
+				let d = new Date();
+				console.log(".then-3: "+ d.getHours()+" : "+ d.getMinutes()+" : "+d.getSeconds());
+				return delayedPromise(1000);
+			}
+		);
+		// what is happening here? we are calling function which return promise but it resolve it after amount of millisecnod we pass.
+		// output is:
+		// begining flow: 1 : 49 : 9
+		// .then-1: 1 : 49 : 10
+		// .then-2: 1 : 49 : 11
+		// .then-3: 1 : 49 : 12
+		// we can se clearly that couldn't have achived this with default promise sent by .then callback.
+	
+	=> Above example is just for understanding how chaining works how can we take benfit of it. Let's make use of that pattern for embeding real time API.
+	   ex.
+		function apiCall(url) {
+
+			return new Promise((resolve,reject)=>{
+				ajax(url,resolve); // resolve promise when we get response. note that even if some malicious library called 
+								   // callback  many times our promise get resolved only once as it would be immutable then after ignoring rest.
+			});
+			
+		}
+		apiCall(api_url_1).then(
+			(api_url_2)=> {
+				
+				console.log(api_url_2);
+				return apiCall(api_url_2);
+			}
+		).then(
+			(response_2)=> {
+				console.log(response_2);
+			}
+		);
+	// we are creating useful flow for real time scenario in above code.  We are converting callbackmechanism to promise based mechanism.
+	// note that whenever we are playing with promise chainging, even if single promise in chaining get rejected somehow reset promises 
+	// in subsequent chaining also get rejected.
+--> We saw Promise.resolve(anyValue); returns promise resolved with that value. but we aso can create rejected promise using 
+	p = Promise.reject("I am rejected promise");
+	p.then(
+		()=> {
+			// this will never execute
+		}
+	).catch(
+		(err)=> {
+			console.log(err); // will print:  this will never execute
+		}
+	);
+
+--> In regular JS we do error handeling by try{..} catch(err){..}finally{} blocks. However when we are dealing with asynchronous programming 
+	we will not able to do error handeling in that way.
+	ex. function foo() {
+			setTimeOut(()=> {
+				baz();// calling undeclared function which will throw error.
+			},0);
+		}
+		try {
+			foo();
+		}
+		catch(e) {
+			console.log(e);
+		}
+		// in above code we will never catch error no matter what. baz function call which is main error source  will execute in asynchronous way.
+
+--> There are some inbuilt functions/patterns built around promsies. Obviously they are there to solve some specific requirement or problem.
+	1) Promise.all([p1,p2]); 
+	   It accept array of promises, array of values. Whatever array content is,  each of element first go through Promise.resolve(arrayElement);
+	   so that to make sure that every element become promise. Promise.all([p1,p2]) actually resolve all promises within it and we can .then() on it
+	   like regular promises. In .then() callback instead of getting single resolved we get array of values. sequence of values is same as sequence of 
+	   promises we passed from left to right in array. note that sequence is not according to sequence of their resolution.
+	   ex.
+	   promiseArray = [p1,p2,p3];
+	   Promise.all(promiseArray).then(
+			(valueArray) => {
+				for(var i=0;i<valueArray.length;i++) {
+					console.log(valueArray[i]);
+				}
+			}
+	   ).catch((err)=>{console.log(err)});
+	   
+	   // If any one of promise in array is rejected then whole .then on promise.all() will not execute and control will pass to .catch();
+	   // in order to make .then executable all of promises in array must resolved without any error or should not get rejected.
+	   
+	   => Important question here remain is why we need promise.all()? When we can use it?
+	      Well imagine we have multiple APi calls let's say 4 calls. We need response from first three APIs in order to call fourth API.
+		  In such case we can pass array of promises of first three API calls to promise.all() and in .then() we can call fourth one.
+		  Obviously we could have chained it but it is not needed. Chaining is done when 2nd is depending 1st, 3rd on 2nd and so on.
+		
+	2) Promise.race([p1,p2]);
+	   It accept array of promises, array of values. Whatever array content is,  each of element first go through Promise.resolve(arrayElement);
+	   so that to make sure that every element become promise. As word race suggest actually it create race between all promises and in .then we get value
+	   of promise which get resolved first. As we csee winner is only one that mean we will not get array of values but single value.
+	   
+	  => from array whatever pomise resolve or reject first get handled. if any one promise get rejected efore rest then .catch() part will executed
+	     and rest promises will be ignred. Similarely is any of promises get resolved first then rest promises will be ignored.
+		// It's easy to say that rest promises will get ignored but it may create some serious bug in our code. For ex what if rest promses which were 
+		// ignored had consumed some resources? to overcome this we have .finally(()=> {})
+	
+	  =>  For any individual promise or Promise.race() we have .finally() which dosen't get any value in it's callback function but whatever we write in 
+	      that callback functions will get executed irrespective of wheter promise is resolved or rejected.
+		  ex. p1.then(
+			(val)=>{
+					console.log("success. got value: " +val)
+			}).catch(
+				(err)=>{
+					console.log("faced error. got error: " +err)
+			}).finally(
+				()=>{
+					console.log("cleaning up tasks here. don't get any value")
+				}
+			);
+	  => One important note we need to keep in mind is, in case of promise.all even if pass empty array there wouldn't be error. in resolution we will get 
+	     empty array. But in case of Promise.race we must pass at least one promise in array after all race need at least one participant.
+	
+	3) Promise.allSettled()
+	   It accept array of promises, array of values. Whatever array content is,  each of element first go through Promise.resolve(arrayElement);
+	   so that to make sure that every element become promise. This function actually give us array of all promises with their details. rejected, resolved etc.
+	   we can check status of promise make .then on every individual from array.
+	   ex.
+	    var p1 = Promise.resolve(3);
+		var p2 = new Promise((resolve, reject) => setTimeout(reject, 100, 'foo'));
+		var promises = [promise1, promise2];
+
+		Promise.allSettled(promises).
+		  then((results) => results.forEach((result) => console.log(result.status)));
+	
+	// There could be more inbuilt pattter/ functions for promises in future JS versions. It's not big deal actually even we can create some patterns
+	// by our own logic.
+
+--> When we have error handler in individual promise as well as in .catch at end of the promise chaining then only individual error handeling will get executed.
+	ex.
+		var p = new Promise( function(resolve,reject){
+			foo2(); //causes error
+			resolve("done");
+		} );
+
+		p.then(
+			()=> {
+				console.log("I am in success")
+			},
+			(err)=> {
+				console.log("I am in individiual error handler");
+			}
+		).catch(
+			
+			(err)=> {
+				console.log("I catch block")
+			}    
+
+		);
+		// output : I am in individiual error handler
+
+--> Like callbacks promises to have some drawback.
+	1) promises can not be cancelled from external world. 
+	2) Promises are little slower than callback functions becuase in order to solve callback hell we did something behind the scene which obviously take more time.
+	3) promises can be resolved only once. Let's we have to resolve promise on button click. Only on first click promsie will get resolved then after subsequently
+	   event would be ignored.
+
+--> Generators are by far the one of most important topic in Asynchronus programming.
+	// Generators in JS are functions which can take pause in between it's execution. in traditional function we can't do that.
+	// while declaring generator functions we have to include * between keyword function and function name.
+	   ex. function *foo() {}, function* foo(){} or function*foo(){} all are valid syntaxes for genrator functions in JS.
+	// In generators we can mark pause with yield statement. yield statement also can send data.
+
+--> Below is systematic and simplest example of the JS generator.
+	ex. 
+	function * fooGenerator(x) {
+		console.log(x);
+		yield "I am yeild1"; // each yield statement can return some data while taking pause.
+		console.log("after yield1 x: " +x);
+		yield "I am yeild2";
+		console.log("after yield2 x: " +x);
+		 yield "I am yeild3";
+		console.log("after yield3 x: " +x);
+	}
+	var iterator = fooGenerator(10);// this statement dosen't run function but simply create iterator which in future is like remote control for execution of the 
+	                                // generator function.
+	iterator.next(); // this will execute statement until it face yield statement. will print 10 which we passed as argument while creating iterator.
+	                 // this also will return {value:'I am yeild1', done:false}. done:false because  there are still lot of statement remained in function
+	=> each iterator.next() return object which has two proeprties {value:'yielded value', done:false/true} value and done. done would be false if statement are remained in 
+	   function yet.
+	iterator.next();// this will start execution after previous yield and will continue until it face any yield statemet or until function end. . 
+					// hence will print: after yield1 x: 10, and will return {value:'I am yeild2', done:false}
+	iterator.next();// this will start execution after previous yield and will continue until it face any yield statemet or until function end. . 
+					// hence will print: after yield2 x: 10, and will return {value:'I am yeild3', done:false}
+	iterator.next();// this will start execution after previous yield and will continue until it face any yield statemet or until function end. 
+					// hence will print: after yield3 x: 10, and will return {value:'I am yeild2', done:true}
+					// this it return done:true because it didn't encountered any yield statement and reached end of the function.
+	
+	// As we can see we take pause in between iterator.next(); statements. after taking pause we can do other stuff. i.e. we are not required to run all .next() in sequence
+	// we can run it any time we wish.
+
+--> If generator function dosen't have any yield value or when it encounter return statement , at that time it still return object 
+	{value:somevalue, done:false/true}. In traditional functions we will get value directly returned from function.
+	ex. function *fooGenerator(x,y) {
+		return x*y; // simple gernartor which return multiplication of two numbers.
+	}
+	function fooNormalFunction(x,y) {
+		return x*y; // simple function which return multiplication of two numbers.
+	}
+	var iterator = fooGenerator(3,4);
+	iterator.next();// will return {value:12, done:true}.
+	fooNormalFunction(3,4);// will return 12.
+
+--> there is no way to differentiate between normal function and generator function while making function call. Difference only is * before name of function 
+    in case of the generator function. 
+	// we can't have two function with same name. second definition simply will override previous one. If we try to create generator function and normal function
+	// if we try to add yield statement in normal function (whose name dosen't starts with *) it will not throw error in function definition.
+	// but while invoking function it will throw ->
+	ReferenceError: yield is not defined
+	// with same name , simple which ever was latest definition will simply override previous one.
+	
+	ex. 
+		function * foo(x,y) { // generator
+		   return x*y;
+		}
+		function foo(x,y) { // normal function overrides definition of generator as it has same name
+		   return x+y;
+		}
+		foo(7,8);// will return 15 and not iterator.
+
+--> We understood how generators work by taking simple example. Now it's time to understand some more complex example.
+	function * fooGenerator(x) {
+		var y = x*(yield 'y1')+(yield 'y2')+(yield 'y3')*(yield 'y4');
+		return y;
+	}
+	var iterator = fooGenerator(2);
+	// before we understand whole flow in above example we have to fix below things in our mind.
+	// 1) yield statement can appear anywhere, even in expression like in above example. And it works in same way. i.e. even assignment operator take pause.
+    //    that means we are taking pause even when half of statement is executed.
+	// 2) whatever value we put after yield is returned in value proeprty of object which is returned from .next() of iterator.
+	// 3) We pass arguments to generator function while creating iterator. that argument is nothing but function paramaters.
+	//    However we can also pass arguments in .next() statement. that argument will be placed in place of previous yield statement.
+	=> Now let's understnad above flow.
+	   1) iterator.next();// this will start execution of generator. it will return {value: "y1", done: false} as we are returning y1 from first yield.
+	                      // note that when we first execute iterator.next() it dosen't make sense to pass argument because that will be ignored.
+						  // why? because argument passed through .next() is used to replace previous yield keyword. but in first time there wouldn't be any.
+	   2)iterator.next(3); // we had passed 2 while creating iterator so until now statement is y = 2*(yield 'y1')+(yield 'y2')+(yield 'y3')*(yield 'y4')
+	                      // from above statement now we are currently pausing at second yield. so it will return {value: "y2", done: false}.
+						  // passed argument is for previous yield. in our case it is first yield hence statement now would be.
+						  // 2*(3)+(yield 'y2')+(yield 'y3')*(yield 'y4')
+	   3) iterator.next(4);// latest statement was 2*(3)+(yield 'y2')+(yield 'y3')*(yield 'y4'). this time we are pausing at 3rd yield statement.
+	                      // hence .next() will return {value: "y3", done: false}. argument passed is for previous yield i.e. 2nd yield.
+						  // hence statement would be 2*(3)+(4)+(yield 'y3')*(yield 'y4')
+       4) iterator.next(5);// latest statement was 2*(3)+(4)+(yield 'y3')*(yield 'y4'). this time we are pausing at 4th yield statement.
+	                      // hence .next() will return {value: "y4", done: false}. argument passed is for previous yield i.e. 3rd yield.
+						  // hence statement would be 2*(3)+(4)+(5)*(yield 'y4')
+       4) iterator.next(6);// latest statement was 2*(3)+(4)+(5)*(yield 'y4'). this time we are not  pausing at any yield statement. hence we will 
+						   // encounter return statement. but before returning we will have o replace previous yield statement.
+	                      // argument passed is 6 for previous yield i.e. 4th yield.
+						  // hence statement would be 2*(3)+(4)+(5)*(6). finally this statement would be returned in value property.
+						  // hence will return {value: 2*(3)+(4)+(5)*(6), done: true}. this time done is true as there are no more statement left in generator.
+						  // {value: 2*(3)+(4)+(5)*(6), done: true} = {value: 6+(4)+30, done: true} = {value: 40, done: true}
+
+--> We can have multiple iterators of same generator functions and each of iterator will have separate control over over function execution.
+    .next() of one iterator hs nothing to do with the .next() of other iterator and hence they run independently.
+	ex.
+	   function * foo() {
+		   console.log("Hi ");
+		   yield 1;
+		   console.log("hello");
+	   }
+	   var iterator1 = foo();
+	   var iterator2 = foo();
+	   iterator1.next();// will print Hi
+	   iterator2.next();// will print Hi
+	   iterator1.next();// will return {value:1,done:false} and will print hello.
+	   iterator2.next();// will return {value:1,done:false} and will print hello.
+	   
+	   // If we create global variable which is in generator function , both of iterator will interact with it.
+
+--> If we combine promises and generators together we can make js engine to wait until particular statement finish (i.e. considering that statement is 
+     asynchronous and will take some time to execute).
+	ex. 
+		function *foo () {
+			yield new Promise(
+				(res,rej)=> {
+					setTimeout(
+						()=> {
+							res();
+						}, 3000
+					);
+				}
+			);
+			console.log("after async operation");
+		}
+		var iterator = foo();
+		iterator.next().value.then(()=> {
+			iterator.next();
+		}); // this will wait for 3 seconds and then print after async operation.
+	// we manually creating pattern for this behvaior but in ES7 onwards we don't need to take efforts for it. we have async and await keywords to use.
+
+--> above example was internal implementation of the async and await keywords.
+    ex. 
+	async foo() {
+		await new Promise(
+			(res,rej)=> {
+				setTimeout(
+					()=> {
+						res();
+					}, 3000
+				);
+			}
+		); // here we are using setTeimout but theese often are API calls in real time code. and API call librairies often return promises.
+		console.log("i am after first asynchronous statement")
+	}
+	foo(); // will print i am after first asynchronous statement after 3 seconds.
+	=> 1)from ES7 onwards we have async and await keywords which we can use.
+	   2) before using them we have to make sure that whatever we are writing after await return promise which.
+	   3) we can write await statement only inside function marked asynchronous with keyword async.
+	   4) internally this mechanism happens by using promises and generators. which we saw in just earlier point.
+	   5) making use of async and await repeatedly in our code is not great thing as it can slow down our code significantly.
+	   6) when we use async and await keywords and we have API call in await statement then we will get resolved value of promise will 
+	      ex. var res = ajax("https://sample-url.com");
+	   7) If we use async and await in code for calling API there is no callback or promise callback for error handeling hence we need to wrap 
+	      await statement in try catch block.
+		  ex.
+		  try {
+			   var res = ajax("https://sample-url.com");
+		  }
+		  catch(e) {
+			  console.log("some API error: "+e);
+		  }
+
+--> We sometime can be really in desperate need of multithreading in javascript. Truth is in JS we don't have it. However there are some features
+    provided by browser. Note that this is feature of browser and not feature of JS as language.
+	THat feature is called as web workers. web workers are nothing but separate JS code which will execute in background.
+	ex.
+	var a= 0;
+	var w1 = new Worker("full-path/of/jsfile/sample.js"); // it could be some URL as well.
+	// above statement will immediately load that file in separate thread and will start it's execution. and meanwhile we can do following execution.
+	while(a<10000) {
+		console.log(a);
+		a++;
+	}
+	// imagine scenario that we want to run two such loop. we can inclue one in web worker js code and other in main code. which will increase performance two times.
+	=> One important thing to keep in mind is, web worker don't have access to any resources of outer program and similarely outer program dosen't have access
+	   to any resources including variable etc. of web worker code. However still both of them have access to some standard API of browsers like
+	   navigation, applicationcache, location etc. But even in that case both of them will have their own copies and hence they don't share them
+	   Web wrokers don't have access to even local storage and session storage.
+	=> Only way to establish communicate is using message event. message event is also used to establish communication between iframe  and main window etc.
+	  ex. 
+	  in main file main.js
+	  var w1 = new Worker("full-path/of/jsfile/sample.js");
+	  w1.addEventListener('message', (event)=> {
+		  console.log(event.data);
+	  }); // this means anything posted from inside web worked code can be listened here.
+	  w1.postMessage("essage or any complex data in obj to web worker"); // send message to web workers
+	  
+	  in webworker js file webworker.js we have to establish same set up 
+	  
+	  addEventListener('message', (event)=> {
+		  console.log(event.data); // listen from main program.
+	  }); 
+	  postMessage("some message to main program");// send data to main program.
+	  // here we can observe difference that here we dont' have to use any vairable to address i.e. w1.postMessage(); because it will by default send
+	  // data to the parent program.
+	=> We can child web workers as well. i.e. we can create web worker inside web worker.
+	   There is also concept of shared worker where one web worker can be shared by different tabs..
+
+--> In Es6 we have block scoped variable with keyword let. with var eyword it has function scope or global if it's outside function.
+    variable with anykeyword inside function will create global scope variable.
+	ex.
+	{
+		let i =10;// it has scope limited to {} bracket. it includes sometime loop, functions or if statement. whatever has {}
+	}
+	foo() {
+		var a=90;// it has function scope. 
+	}
+	foo(){
+		u=89; // it becomes global variable as it is declared without keyword.
+		// all global variables are available on window object. window.u  means global variable u.
+	}
+	{
+		const t =90; // const keyword again has block scope.
+	}
+	// both let and const don't get hoisted . but for var keyword it get hoisted.
+	
+--> This below gottcha is by far the one of important concept to understand.
+    var arrLet =[];
+	var arrVar =[];
+	for(let hh =1;hh<=5;hh++) {
+	  arrLet.push(()=>{console.log(hh)});
+	}
+	for(var gg =1;gg<=5;gg++) {
+	  arrVar.push(()=>{console.log(gg)});
+	}
+	// we are just creating array of function. all functions are nothing but closures. Only difference in both array is in one of for loop we are using let keyword
+	// and var in other one in order to understand how they work.
+	1) arrLet[2](); 
+	   // we are triggering third function in the array. output is 3. Let's understand how exactly it happended.
+	   // When we use let in for loop what it does is in first iteration. let hh=1; check if h<=5 
+	   // (if yes execute content of loop then increment it to 2 and in later iteration whatever incremented value assig it to hh with brand new declaration let hh=2
+	   // and continue doing this.)
+	   // as you can see variable is getting declared each time for each iteration. hence each of closure will get variable of that particular iteration.
+	   // hence those closure will print whatever value variable had during that iteration.
+	2) arrVar[3],arrVar[2] etc. ; // any function will print 6
+	   // Reason is var keyword decalre variable only once that in functional or global scope. hence all functions points to the same variable.
+	   // at the end of loop that variable become 6 because only then loop will get terminated. now variable has value 6 hence each function in array will print 6.
+	
+	=> Above concept is often asked with setTimeout inside for loop instead of the array of function and it has similar explanation. only execution happen 
+	   in callback queue instead of calling manually as we are doing with functions stored in the array.
+
+--> We have const keyword. Const keyword suggest that we can not alter the content of variable once it is initialized.
+    that is true for basic data type. But for we object types or array type we can do that.
+	ex. const obj = {a:10};
+	obj.a=11; // it is valid and change value of property.
+	what is not possible is assigning brand new object reference directly to const variable.
+	ex. const obj = {a:10};
+	obj = // whatever you write wouldn't work. whether it is object or simple data type.
+
+--> So far we understood difference between block scoped and function scoped variables. we understood let, var and const keywords.
+    well that knoweldge is useful for function expressions as well.
+	like.
+	ex.
+	 foo();// will give error because even in case of variable it is hoisted but it's value is undefined so we are trying to call undefined.
+	 var foo = function () {console.log("hello")}
+	 foo();// will work without doubt.
+	// note that just functions without function exoression works well as they get hoisted.
+	ex. 
+	 foo();// will work
+     function foo() {console.log("hello")}	  
+	// now we wouldn't face much difficulties identifying what will happen if function expression is done using let keyword.
+	// it will not work because let and const keyword are not hoisted. they are block scoped but they don't get hoisted even in that block.
+	 ex. {
+		 foo(); // will throw error
+		 let foo = function (){console.log("hello")}
+	 }
+	
+	=> seems like we have covered most of scenarios. But not really.  what if function is declared without function expression but is present within block.
+	  ex.
+	  {
+		  foo();// will get execute successfully because even if they have block level scope they get hoisted.
+		  function foo() {
+			  console.log("hello")
+		  }
+		  foo();// will work without doubt.
+	  }
+	  foo();// will not work because function delcaration has block level scope in ES6.
+	  
+	 note: If you run this code in browser console it may get executed. That dosen't mean above conecept is wrong. It will throw error only in ES6.
+	       browser on other hand still support es5. (Most of browsers). So in conclusion block level function scope is limited to ES6 and not for previous versions.
+
+--> We have yet another feature in ES6 which is spread operator. Syntax is three dot followed by object or array. ex ...obj or ...arr;
+    What it does is it segreate all properties of object or all elements in array and put them as comma separated values.
+	ex.
+	var obj = {
+		a:10,
+		b:"santosh",
+		sal:107601
+	};
+	foo(...obj) is equivalent to foo(10,"santosh",107601);
+	However there is one important thing which we should keep in mind. It segreate properties in case of array only up to 1 level.
+	ex. var obj = {
+			obj1:{ a:19	},
+			prop: 10
+		
+		};
+		foo(...obj) is equivalent ro foo({ a:19	}, 10);
+	// this understanding is very important because we get tempted to assign one object to other by this method. below is illustration.
+		ex.
+		obj1= {
+			a:10,
+			b:12
+		};
+		obj2 = {...obj1} ; // copying object obj1  to obj2
+		// it works smoothly. without spread operator like obj2=obj1, if we modify obj1 then changes would have been reflected in obj2 as they are pointing to 
+		// same reference. but wih help of spread operator we get rid of that.
+	// Now above idea for copying one object to other won't work if we have object as propert of object itself.
+	ex.
+	var obj1 = {
+			obj:{ a:19	},
+			prop: 10
+		
+		};
+		obj2 = ...obj1;
+		// in above case still obj of both obj1 and obj2 points to same refernce.hence obj1.obj.a= 20 will impact obj2.obj as well.
+	=> In order to copy one object to other same workaround is stringify object and then parse it back.
+	   ex. obj2 = JSON.stringify(JSON.parse(obj1)); // here all levels are copied successfully.
+	=> Again exclusively in ES6 and not in prior versions we have Object.assign() method for copying one object to other.
+	   ex. Object.assign(targetObj,sourceObj); // but again it has drawback that it does it only for topmost level. so JSON way which given above seems reliable for now.
+	=> inbuilt object Object has several methods ex. Object.preventExtension(obj);// we can not further add any property tothat object.
+
+--> We can have default parameter values in ES6 for any variable.
+	ex. function foo (x,y) {
+		x = x || 12; // if x is falsy then 12 will be default value
+		y = y || 56; // if x is falsy then 56 will be default value
+		return x+y;
+	}
+	// Above example will return 68 if we pass nothing to function . ex. foo();
+	// however it works on the basis of falsy values. And unfortunately some useful values also are falsy 
+	// ex. 0,"" etc. 
+	// in above example for foo(9,0); we are expecting 9  but answer would be 65. as 0 would be considered as falsy and hence get replaced by 56.
+	=> To overcome this problem we have nice syntax again exclusively in ES6 and not in prior versions.
+	   foo(x=10,y=90) {
+		   return x+y;
+	   }
+	   // default values are 10 and 90 if we miss any of parameter.
+
+--> Destructuring is yet another commonly used feature from ES6.
+    ex. obj = {a: 1,b:45,c:32}; we want to save proepry values in variables a , b and c.
+	currently we do a= obj.a, b= obj.b and so on.
+	Using destructuring syntax.  we have . {a,b,c} = obj; all three properties will get sotred in a , b and c respectively.
+	// note below syntax.
+	ex. {x:a,y:b,z:c} = obj;// we may missunderstand that values now are getting stored in x,y and z respectively but they are not.
+	 // because in tradition object we have target:source i.e key:value but in destructuring it is source:target. hence values would be store in a,b and c.
+	
+	// destructuring is not alternative to declaring variable henc ebefore doing {a,b,c} = obj; we should have declared a,b and c respectively.
+
+--> We also have short hand proeprties in ES6.
+  currently we have obj = {a: a}; in such case in ES6 we can have obj = {a};
+  Similarely in case of function. currently we have below syntax.
+  obj = {
+	  x: function(){ something here},
+	  y: function () {something here}
+  }
+  // in case above syntax could have been expressed as.
+  obj = {
+	  x() {
+		  something here
+	  },
+	  y() {
+		  something here
+	  }
+  }
+  
+
+--> Also we have one of the famous feature in ES6 which is arrow function.
+    (a) = > {a} which is equivalent to function (a) { return a}
+	// Although we saw it saves couple of syntax from older method another most important difference is how this keyword behave inside normal function and
+	// in arrow function. In fact arrow function is introduced solely for that purpose.
+	=> In normal function if it is constructor it has own scope for this keyword. other wise it may point towards global this which is window object in browser.
+	   In arrow function , it dosen't has it's own scope of this keyword and hence this inside arrow is same as what it was in  outer scope in which arrow funcion is 
+	   present.
+
+--> We have template string or string interpolation or template literal whatever we prefer to say. 
+    we can pass variable to string using this syntax. To start with first we need to use `` instead of '' or "" for string. Anyway `` is quite famously used for creating
+	multiline string literal in javascript. Apart from that we can pass variable like below.
+	var person ="Santosh kadam";
+	console.log(`that person is ${person}`); // output would be that person is Santosh Kadam
+	
+--> Prior to ES6 whenver we had to use modules we used to below things.
+    foo() {
+		
+		return {
+			x: function () {
+				return 12;
+			},
+			b: 23,
+		    and so on.
+		}
+		
+	}
+	var moduleFoo = foo(); // we can now use moduleFoo variable to use all utilities encapsulated in that particular object.
+	In Es6 we have export keyword to export and import to import.
+	ex. in file foo.js
+	export function foo (){ do something};
+	export  const x =90;... and so on.
+	Now while using them in other file let's say ex.js  we can import them.
+	import {foo, x} from 'foo' ;// file path without .js extension.
+	// all import and exports heavily used in lot of UI framework. It is important to understand all methods of exporting and importing.
+	
+--> When we export something from one file and then iport it at other side we get all exported members. If we change something in exported member after it's imported 
+    then changes get reflected at importe side as well.
+	ex. export const obj = {prop:"Sample value"};
+	    obj.prop = 24;
+		
+		and in separate file 
+		import obj from 'source'; // 
+		console.log(obj.prop);// will print 24 which newer value.
+
+--> there are two main types of exporting and importing.
+	1) Named export and imports: Here while exporting from one module we give name to different functionalities and then at importing side we can import using their names.
+	   ex. export foo () {};
+	       export foo1 (){};
+		and at importing side.
+		import {foo,foo1} from 'file-name'; // here we need to use {} and other difference is we need to use exact name which is exported.
+	2) default export is something where while importing we don't need to use {} and also we don't need to use exact name of exported member.
+	   ex. export default foo () {};
+	       export boo(){};
+		   at importing side 
+		   import anyname, {boo} from 'filename';// note that for named imports we used {}. for defaultly exported member we can give any name while importing it.
+		   // important thing to keep in mind here is while exporting we can have maximum one default exported member and not more than that.
+	=> It's worth to notice all variants of syntaxes
+		1) export foo as doo; // we are exposing name doo to outside world and not foo. hence while improting we must have to import using doo.
+		import {doo} from '';
+		2) export foo() {};
+		   import {foo as moo} from 'file'; // we have renamed it at our side.
+		3) export * from 'file1';// note that we are in file1.js here . we are importing everyting from file1 and exporting it again.
+		   import {all comma separated members } from 'file2'; // this is in file3
+		   // this form extensively used to export all from single file. In NPM packages often everything eported from single index.js file. but 
+		   // different modules themselves are written in hundreds of files.
+	=> In ES6 modules, even if we declare variable with var keyword outside function it wouldn't be global. That scope is limited to that module only. 
+	   If we want that functionality or vairable to be used from outside then we must export it.
+		
+--> we have class keyword in ES6 by which we can create classes. But don't get fooled by syntaxes behind the scene it works similar protoypical object constructor
+    function and not like classes in other languages like java. 
+	ex. class Foo {
+		
+		constructor (x,y) {
+			this.x =x;
+			this.y =y;
+		}
+		giveMeXY () {
+			return this.x*this.y;
+		}
+	}
+	// we are happy with above syntax but behind the scene what happens is constructor function with name foo and signature which is provided in constructor.
+	// Here unlike java we are not allowed to have multiple constructor for same class, after all it's just constructor function.
+	// above code internally behave similar to below code.  
+	ex. 
+	function Foo(x,y) {
+		this.x = x;
+		this.y = y;
+	}
+	Foo.prototype.giveMeXY = function() {
+	return this.x * this.y;
+	}
+	
+	Method added in class is similar to adding proeprty with function value in es6.
+	// ex.
+	obj = {
+		z:10,
+		x() {
+			
+		}
+		
+	}
+	// only difference is comman is not there which is not allowed in class.
+	
+	// As we already stated it's nothing but regular constructor but there are some differences in class keyword.
+	// 1) without class keyword in normal constructor function we can call it as normal function as well without using new keyword. 
+	//    here in this case it will not work.
+	// 2) function constructor get hoisted like normal function only and hence we can use it before we declare it in code. in this case it will not work.
+	// 3) we have extends keyword to inherit parent class from child also have super keyword to call constructor of parent class from child constructor .
+	//    ex. 
+		class Foo {
+			constructor(x) { this.a = x; }
+			foo() {}
+		}
+		class Bar extends Foo {
+			constructor(x,y) {
+				super(x); 
+				this.b = y; 
+			}
+		}
+		/// note that we can also call method of parent class from child using super keyword. ex.  super.foo()
+		// be it constructor call or be it method call using super keyword, it must be first statement in our constructor .
+
+
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
