@@ -2139,6 +2139,66 @@
 		/// note that we can also call method of parent class from child using super keyword. ex.  super.foo()
 		// be it constructor call or be it method call using super keyword, it must be first statement in our constructor .
 
+--------------------------------------------------------------------- DOM-MANIPULATION -----------------------------------------------------------------
+
+--> DOM stands for document object model. Browser parse HTML code and maintain tree like structure of nodes. Where each node is nothing but element of html code.
+    Node isnothing but object of that particular element. That whole tree of object is called as DOM. note that hierarchy in that tree is same as hierarchy of html
+	tags present in our code.
+	=> Beside DOM we also have virtual DOM. When we manipulate original DOM for ex. by addin gelement or changing some attribute of element changes will get refleceted
+	   on HTML page as well. In simple page it is okay but in real application in html there are hundreds and sometimes even thousands of elements. if we make changes to 
+	   changes in original DOM, traversing through suc hige tree woudn't be efficient. To avoid this browser maintain copy of actual DOM that is called as virtual DOM.
+	   When we manipulate DOM, browser doses changes in virtual DOM and then by comparing both it make changes in actual DOM. it modify only that part which is changed.
+	=> We also have shadow DOM. part of DOM which is not eposed called as shadow DOM. ex. when we create input with type="range" we get slider. if we look closely 
+	   in order to make that slider on browser ther must be lot of elements and not just input tag. but those extra elements are hidden and not part of actual DOM.
+	   those are part of shaodow DOM. Another such example is select box.
+
+--> window is global object in browser environment. document is another global object which let us access all elements. document object is one of proeprty of
+    window object which is at top most place in hierarchy.
+
+--> On document object we have couple of methods to access DOM.
+	1) document.getElementsByTagName('tag Name'); // return all tag with tag name passed. it returns array list.
+	2) document.getElementById('id Name'); // return  tag with id name passed. it returns single lement and not array list.
+	3) document.getElementByClassName('class Name'); // return all tag with class name passed. it returns array list.
+	4) document.querySelector("");// we can write any css selector as argument and it will return first matching element. it returns single element.
+	4) document.querySelectorAll("");// we can write any css selector as argument and it will return all matching elements. it returns array list of elements.
+	// any css selector we can pass to querySelector. ex. .classname #idName etc. all selectors you can imagine for css.
+	
+	=> when we use document.methodName to access we are asking method to search on whole document. We also can call those method on any element object.
+	   ex. we can get first parent element and then call method on that particular parent only. parent.querySelector();
+	   // In this case method wil search element within that particular parent only and not in whole document.
+	=> Another small sidenote here is querySelector("css selector") is indeed very powerfull however if we have choice we should use getElementById
+	   if possible because it has better performance.
+
+--> When we access element by one ob above methods we access all properties of that element. ex. height, width, style etc.
+	
+--> We sually include javascript code inside html in few different ways.
+	1) <script></script> // we can write code inside script tag. browser render elements from top to bottm. whenever it encouter script tag it will execute it.
+	2) <script src="filepath/filename.js"></script> // by adding file to html code using script tag.
+	=> note that it's our duty to put script tag at appropriate place. if we are accesing element before it render then code will throw error.
+	   ex. if we put script tag in head element which try to access element from body then it will throw error. because script will start it's execution when head is being 
+	   rendered and that time body elemetn is yet to render so it will not able to find any element from body.
+	=> to resolve problem which we stated in above note we may put script tag just above </body> tag so that all elements are rendered. 
+	   we also can use keyword defer in script tag.
+	   ex. <script src="file-path/file.js" defer></script> // this means load the script but execute only when parsing is finished for all element. in 
+	      // this case we must put tag in head element.
+
+--> For form elements let's say Input tag, there is difference in property and atribute of element. what we set from html code by value ="" is attribute. but then 
+    after whatever we type in html input is it's value. after typing attribue value dosen't get updated but in element object value proeprty will get updated.
+	In order to change attribute of element programatically we have document.setAttribute("name","value"); method which can set any attribute.
+
+--> In order to access parent element of element we parentElement property. Similarely we have previousSibling for selecting previous node. and 
+    previousSiblingElement for selecting previous element. node means it could be empty text between two as well and element means it will track only element and not
+	white Space.
+
+--> IN order to create new element with js we have two options. var a=document.createElement("elementname"); and then use appenCHild(),appen(),insertbefire() etc methods.
+    Another methods is on parent element assign string which contain html code to innerHTML property. p.innerHTML ="some html string code";
+
+--> In order to delete or replace element in dom then we have replace(), remove() methods which can be called on element reference. we also have removeChild(child);
+    which we need to invoke on parent element.
+
+--> element.className propery override all previous class names. so if we have seven classes earlier and we added new 2 with this one then all previous will be removed.
+    elment.classList.toggle('classname');// this check if element has class, if it is there it just removes it and if it is not there it will add it.
+	
 
 
 	
