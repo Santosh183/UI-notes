@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Pure js demo project</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <script src="index.js" defer></script>
+  </head>
+  <body>
+    <div id="backdrop"></div>
+    <div class="main-container">
+      <header class="header-main">
+        <h2>Task Manager</h2>
+        <div class="btn-container">
+          <button class="button-add-task">Add new +</button>
+        </div>
+      </header>
+      <ul class="task-list"></ul>
+      <div class="modal modal-add-task">
+        <p class="modal-header">
+          <span class="cross-cancel">x</span>
+        </p>
+        <div class="modal-body">
+          <h3>Enter new task details</h3>
+          <form action="">
+            <div class="form-input">
+              <label for="name-input">Name: </label>
+              <input required id="name-input" type="text" />
+            </div>
+            <div class="form-input">
+              <label for="description-input">Description: </label>
+              <textarea
+                required
+                name=""
+                id="description-input"
+                cols="30"
+                rows="10"
+              ></textarea>
+            </div>
+            <div class="form-input">
+              <label for="date-input">Date: </label>
+              <input id="date-input" required type="date" />
+            </div>
+            <div class="form-input">
+              <label for="priority-input">Priority: </label>
+              <input
+                id="priority-input"
+                min="1"
+                max="5"
+                required
+                step="1"
+                type="number"
+              />
+            </div>
+          </form>
+        </div>
+        <div class="modal-buttons">
+          <button class="add-confirm">Add</button>
+          <button class="add-cancel">Cancel</button>
+        </div>
+      </div>
+      <div class="modal modal-delete-task">
+        <p class="modal-header">
+          <span class="cross-cancel">x</span>
+        </p>
+        <div class="modal-body">
+          <h3 class="confirm-text">Do you want to delete task?</h3>
+        </div>
+        <div class="modal-buttons">
+          <button class="delete-confirm">Delete</button>
+          <button class="delete-cancel">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
