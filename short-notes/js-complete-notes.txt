@@ -2139,6 +2139,18 @@
 		/// note that we can also call method of parent class from child using super keyword. ex.  super.foo()
 		// be it constructor call or be it method call using super keyword, it must be first statement in our constructor .
 
+--> It is not necessary to have all properties in constructor. 
+    ex class Foo{ name='sometin';
+	id="blah blah";
+	}
+	var obj1 = new Foo();var obj2= new Foo(); obj1.name ;// sometin
+	obj2.name ;// sometin
+	// above is valid code. only thing is each time we create object of scuh class we will have same value of properties for each object we create.
+	// if we wish to chane value we will have to change manually like obj1.prop ='different val'; which itself is not efficient. so in short whenever
+	// we wish to create many objects of class with property values according to our wish then good idea is to create constructor and pass value while 
+	// invoking constructor using new keyword.
+	// Note that without constructor each object will have same values but still each object will have it's own copy of that property.
+
 --------------------------------------------------------------------- DOM-MANIPULATION -----------------------------------------------------------------
 
 --> DOM stands for document object model. Browser parse HTML code and maintain tree like structure of nodes. Where each node is nothing but element of html code.
@@ -2198,6 +2210,11 @@
 
 --> element.className propery override all previous class names. so if we have seven classes earlier and we added new 2 with this one then all previous will be removed.
     elment.classList.toggle('classname');// this check if element has class, if it is there it just removes it and if it is not there it will add it.
+	
+	
+	
+--------- API or methods which we usually should remember how they work. ex. array methods, location, appname etc browser specific APi etc. all remembering things --------
+---- functional vs oop real time use case using js application code ----
 	
 
 
